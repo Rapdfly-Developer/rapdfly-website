@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:www.rapdfly.com)",
+      "Read(//Users/gowtham/Downloads/**)",
+      "Bash(extract-text \"Rapdfly_Website_Rebuild_Master_Spec.docx\")",
+      "Bash(pandoc \"Rapdfly_Website_Rebuild_Master_Spec.docx\" -t markdown)",
+      "Bash(pandoc \"/Users/gowtham/Downloads/Rapdfly_Website_Rebuild_Master_Spec.docx\" -t plain)",
+      "Read(//private/tmp/**)",
+      "Bash(cp \"/Users/gowtham/Downloads/Rapdfly_Website_Rebuild_Master_Spec.docx\" spec.docx)",
+      "Bash(unzip -o spec.docx -d spec_unpacked)",
+      "Bash(python3)"
+    ]
+  }
+}

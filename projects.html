@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Projects — Rapdfly</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<style>
+:root{--bg-primary:#020408;--bg-secondary:#050d18;--bg-card:rgba(10,25,47,0.7);--accent-blue:#00d4ff;--accent-cyan:#00fff7;--accent-purple:#7c3aed;--accent-violet:#a855f7;--accent-green:#00ff88;--text-primary:#e2e8f0;--text-secondary:#94a3b8;--text-muted:#475569;--glass:rgba(0,212,255,0.05);--glass-border:rgba(0,212,255,0.15);--font-main:'Segoe UI',system-ui,-apple-system,sans-serif;}
+*{margin:0;padding:0;box-sizing:border-box;}a,button,[onclick]{cursor:pointer;}html{scroll-behavior:smooth;}
+body{background:var(--bg-primary);color:var(--text-primary);font-family:var(--font-main);overflow-x:hidden;}
+#bg-canvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;}
+nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:20px 60px;display:flex;align-items:center;justify-content:space-between;background:rgba(2,4,8,0.6);backdrop-filter:blur(20px);border-bottom:1px solid var(--glass-border);transition:.4s;}
+nav.scrolled{padding:14px 60px;background:rgba(2,4,8,0.9);}
+.nav-logo{font-size:1.8rem;font-weight:800;background:linear-gradient(135deg,var(--accent-blue),var(--accent-violet));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none;}
+.nav-logo span{-webkit-text-fill-color:var(--accent-cyan);}
+.nav-links{display:flex;gap:40px;list-style:none;}
+.nav-links a{color:var(--text-secondary);text-decoration:none;font-size:.9rem;font-weight:500;letter-spacing:.05em;text-transform:uppercase;transition:color .3s;position:relative;}
+.nav-links a::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:1px;background:var(--accent-blue);transition:width .3s;}
+.nav-links a:hover,.nav-links a.active{color:var(--accent-blue);}
+.nav-links a:hover::after,.nav-links a.active::after{width:100%;}
+.nav-cta{padding:10px 28px;border:1px solid var(--accent-blue);border-radius:50px;color:var(--accent-blue)!important;transition:all .3s!important;}
+.nav-cta:hover{background:var(--accent-blue)!important;color:#000!important;-webkit-text-fill-color:#000!important;}
+.nav-cta::after{display:none!important;}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:4px;}
+.hamburger span{display:block;width:24px;height:2px;background:var(--accent-blue);}
+
+/* Hero */
+.page-hero{position:relative;z-index:1;min-height:54vh;display:flex;align-items:center;padding:160px 60px 100px;overflow:hidden;}
+.page-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 60% 50%,rgba(0,212,255,.08),transparent 60%),radial-gradient(ellipse at 20% 70%,rgba(124,58,237,.1),transparent 50%);}
+.grid-bg{position:absolute;inset:0;background-image:linear-gradient(rgba(0,212,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(0,212,255,.03) 1px,transparent 1px);background-size:60px 60px;pointer-events:none;}
+.hero-img{position:absolute;top:0;right:0;width:55%;height:100%;object-fit:cover;opacity:.1;filter:saturate(0);}
+.breadcrumb{display:flex;align-items:center;gap:10px;font-size:.8rem;color:var(--text-muted);margin-bottom:24px;}
+.breadcrumb a{color:var(--accent-blue);text-decoration:none;}
+.page-hero-label{font-size:.75rem;color:var(--accent-blue);text-transform:uppercase;letter-spacing:.2em;margin-bottom:16px;display:flex;align-items:center;gap:12px;}
+.page-hero-label::before{content:'';width:32px;height:1px;background:var(--accent-blue);}
+.page-hero-title{font-size:clamp(2.8rem,6vw,5.5rem);font-weight:900;line-height:1.05;letter-spacing:-.03em;margin-bottom:24px;}
+.page-hero-title span{background:linear-gradient(135deg,var(--accent-blue),var(--accent-violet));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.page-hero-desc{font-size:1.1rem;color:var(--text-secondary);line-height:1.8;max-width:580px;}
+
+/* Sections */
+section.cs{position:relative;z-index:1;padding:90px 60px;}
+section.cs.alt{background:var(--bg-secondary);}
+.inner{max-width:1280px;margin:0 auto;}
+.sec-label{font-size:.75rem;color:var(--accent-blue);text-transform:uppercase;letter-spacing:.2em;margin-bottom:14px;display:flex;align-items:center;gap:12px;}
+.sec-label::before{content:'';width:32px;height:1px;background:var(--accent-blue);}
+.sec-title{font-size:clamp(1.8rem,3.5vw,3rem);font-weight:800;line-height:1.1;letter-spacing:-.02em;margin-bottom:20px;}
+.sec-title span{background:linear-gradient(135deg,var(--accent-blue),var(--accent-violet));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+
+/* Featured Project (RF Power) */
+.featured-project{display:grid;grid-template-columns:1fr 1fr;gap:0;border-radius:28px;overflow:hidden;border:1px solid var(--glass-border);margin-bottom:80px;background:var(--bg-card);backdrop-filter:blur(20px);}
+.fp-image{position:relative;overflow:hidden;min-height:500px;}
+.fp-image img{width:100%;height:100%;object-fit:cover;transition:transform .6s;}
+.featured-project:hover .fp-image img{transform:scale(1.04);}
+.fp-image::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(0,212,255,.15),rgba(124,58,237,.15));}
+.fp-badge{position:absolute;top:24px;left:24px;z-index:2;padding:8px 20px;background:linear-gradient(135deg,var(--accent-blue),var(--accent-purple));border-radius:50px;font-size:.75rem;font-weight:700;color:#fff;letter-spacing:.05em;}
+.fp-content{padding:60px 52px;display:flex;flex-direction:column;justify-content:center;}
+.fp-category{font-size:.72rem;color:var(--accent-blue);text-transform:uppercase;letter-spacing:.15em;margin-bottom:12px;font-weight:600;}
+.fp-title{font-size:2rem;font-weight:900;color:var(--text-primary);margin-bottom:8px;letter-spacing:-.02em;line-height:1.2;}
+.fp-subtitle{font-size:.9rem;color:var(--accent-cyan);margin-bottom:20px;font-style:italic;}
+.fp-desc{font-size:.95rem;color:var(--text-secondary);line-height:1.8;margin-bottom:28px;}
+.fp-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:32px;}
+.fp-stat{text-align:center;padding:16px;background:rgba(0,212,255,.06);border:1px solid rgba(0,212,255,.15);border-radius:12px;}
+.fp-stat-val{font-size:1.4rem;font-weight:800;color:var(--accent-blue);}
+.fp-stat-label{font-size:.72rem;color:var(--text-muted);margin-top:4px;text-transform:uppercase;letter-spacing:.08em;}
+.fp-tech{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:28px;}
+.tech-tag{padding:5px 14px;background:rgba(124,58,237,.15);border:1px solid rgba(124,58,237,.3);border-radius:50px;font-size:.72rem;color:var(--accent-violet);font-weight:500;}
+.fp-highlights{list-style:none;display:flex;flex-direction:column;gap:10px;}
+.fp-highlights li{font-size:.88rem;color:var(--text-secondary);display:flex;align-items:flex-start;gap:10px;}
+.fp-highlights li::before{content:'✓';color:var(--accent-green);font-weight:700;flex-shrink:0;margin-top:1px;}
+
+/* Project Cards Grid */
+.projects-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
+.proj-card{background:var(--bg-card);border:1px solid var(--glass-border);border-radius:22px;overflow:hidden;transition:all .4s;display:flex;flex-direction:column;}
+.proj-card:hover{transform:translateY(-8px);border-color:rgba(0,212,255,.4);box-shadow:0 24px 60px rgba(0,212,255,.1);}
+.proj-card.wide{grid-column:span 2;}
+.proj-img{width:100%;height:220px;object-fit:cover;filter:brightness(.65) saturate(.9);transition:all .4s;}
+.proj-card:hover .proj-img{filter:brightness(.8) saturate(1.1);}
+.proj-body{padding:32px;flex:1;display:flex;flex-direction:column;}
+.proj-category{font-size:.7rem;text-transform:uppercase;letter-spacing:.15em;color:var(--accent-blue);margin-bottom:12px;font-weight:600;}
+.proj-name{font-size:1.25rem;font-weight:700;color:var(--text-primary);margin-bottom:10px;line-height:1.3;}
+.proj-desc{font-size:.88rem;color:var(--text-secondary);line-height:1.75;margin-bottom:20px;flex:1;}
+.proj-outcomes{list-style:none;display:flex;flex-direction:column;gap:7px;margin-bottom:20px;}
+.proj-outcomes li{font-size:.8rem;color:var(--text-muted);display:flex;align-items:center;gap:8px;}
+.proj-outcomes li::before{content:'→';color:var(--accent-blue);}
+.proj-tech{display:flex;flex-wrap:wrap;gap:7px;}
+
+/* Husk Wood section */
+.husk-project{background:var(--bg-card);border:1px solid var(--glass-border);border-radius:28px;overflow:hidden;margin-top:24px;border-color:rgba(0,255,136,.2);}
+.husk-inner{display:grid;grid-template-columns:1fr 1fr;gap:0;}
+.husk-image{position:relative;min-height:460px;overflow:hidden;}
+.husk-image img{width:100%;height:100%;object-fit:cover;filter:brightness(.6) saturate(.7);}
+.husk-image::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(0,255,136,.1),rgba(0,212,255,.08));}
+.husk-badge{position:absolute;top:24px;left:24px;z-index:2;padding:8px 20px;background:linear-gradient(135deg,var(--accent-green),var(--accent-blue));border-radius:50px;font-size:.75rem;font-weight:700;color:#000;letter-spacing:.05em;}
+.husk-content{padding:60px 52px;}
+.husk-content .fp-category{color:var(--accent-green);}
+.husk-content .fp-title{font-size:1.8rem;}
+.husk-content .fp-stat-val{color:var(--accent-green);}
+.husk-content .fp-stat{background:rgba(0,255,136,.06);border-color:rgba(0,255,136,.15);}
+
+/* CTA */
+.cta-banner{position:relative;z-index:1;padding:100px 60px;text-align:center;background:linear-gradient(135deg,rgba(0,212,255,.06),rgba(124,58,237,.08));border-top:1px solid var(--glass-border);}
+.cta-banner h2{font-size:clamp(2rem,4vw,3rem);font-weight:800;margin-bottom:16px;letter-spacing:-.02em;}
+.cta-banner h2 span{background:linear-gradient(135deg,var(--accent-blue),var(--accent-violet));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.cta-banner p{color:var(--text-secondary);font-size:1.05rem;margin-bottom:40px;}
+.btn-primary{padding:16px 44px;background:linear-gradient(135deg,var(--accent-blue),var(--accent-purple));color:#fff;border:none;border-radius:50px;font-size:1rem;font-weight:600;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:8px;transition:all .3s;box-shadow:0 0 40px rgba(0,212,255,.3);}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 0 60px rgba(0,212,255,.5);}
+.btn-secondary{padding:16px 44px;background:transparent;color:var(--text-primary);border:1px solid var(--glass-border);border-radius:50px;font-size:1rem;font-weight:500;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:8px;transition:all .3s;margin-left:16px;}
+.btn-secondary:hover{border-color:var(--accent-blue);color:var(--accent-blue);}
+
+/* Footer */
+footer{position:relative;z-index:1;background:var(--bg-primary);border-top:1px solid var(--glass-border);padding:60px 60px 40px;}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:60px;max-width:1200px;margin:0 auto 60px;}
+.footer-brand .nav-logo{font-size:1.5rem;display:block;margin-bottom:16px;}
+.footer-desc{font-size:.9rem;color:var(--text-muted);line-height:1.7;margin-bottom:24px;}
+.footer-heading{font-size:.8rem;text-transform:uppercase;letter-spacing:.15em;color:var(--text-secondary);margin-bottom:20px;font-weight:600;}
+.footer-links{list-style:none;display:flex;flex-direction:column;gap:12px;}
+.footer-links a{color:var(--text-muted);text-decoration:none;font-size:.9rem;transition:color .3s;}
+.footer-links a:hover{color:var(--accent-blue);}
+.footer-bottom{border-top:1px solid var(--glass-border);padding-top:32px;display:flex;justify-content:space-between;align-items:center;max-width:1200px;margin:0 auto;flex-wrap:wrap;gap:16px;}
+.footer-copy{font-size:.85rem;color:var(--text-muted);}
+.footer-copy span{color:var(--accent-blue);}
+
+.reveal{opacity:0;transform:translateY(30px);transition:opacity .7s ease,transform .7s ease;}
+.reveal.visible{opacity:1;transform:translateY(0);}
+.rd1{transition-delay:.1s;}.rd2{transition-delay:.2s;}.rd3{transition-delay:.3s;}
+
+@media(max-width:1024px){.featured-project,.husk-inner{grid-template-columns:1fr;}.fp-image,.husk-image{min-height:280px;}.projects-grid{grid-template-columns:1fr 1fr;}.proj-card.wide{grid-column:span 2;}.footer-grid{grid-template-columns:1fr 1fr;gap:40px;}}
+@media(max-width:768px){
+  nav{padding:16px 24px;}nav.scrolled{padding:12px 24px;}
+  .nav-links{display:none;}.hamburger{display:flex;z-index:1001;}
+  .nav-links.open{display:flex;flex-direction:column;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(2,4,8,.97);align-items:center;justify-content:center;gap:32px;z-index:999;}
+  .page-hero{padding:140px 24px 80px;}section.cs{padding:60px 24px;}
+  .projects-grid{grid-template-columns:1fr;}.proj-card.wide{grid-column:span 1;}
+  .fp-content,.husk-content{padding:36px 28px;}.fp-stats{grid-template-columns:1fr 1fr;}
+  .footer-grid{grid-template-columns:1fr;gap:32px;}.footer-bottom{flex-direction:column;text-align:center;}
+  .btn-secondary{margin-left:0;margin-top:12px;}
+}
+
+
+
+/* ── Logo image ── */
+.logo-img{height:34px;width:34px;border-radius:6px;margin-right:10px;vertical-align:middle;flex-shrink:0;display:inline-block;}
+/* ── Theme toggle ── */
+/* ══ LIGHT MODE — full contrast system ══ */
+</style>
+</head>
+<body>
+<canvas id="bg-canvas"></canvas>
+
+<nav id="navbar">
+  <a href="index.html" class="nav-logo"><img src="logo.svg" alt="Rapdfly Logo" class="logo-img">Rapd<span>fly</span></a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="about.html">About Us</a></li>
+    <li><a href="services.html">Services</a></li>
+    <li><a href="projects.html" class="active">Projects</a></li>
+    <li><a href="team.html">Team</a></li>
+    <li><a href="collaborate.html" class="nav-cta">Let's Collaborate</a></li>
+  </ul>
+  <div class="hamburger" id="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></div>
+</nav>
+
+<!-- Hero -->
+<div class="page-hero">
+  <div class="grid-bg"></div>
+  <img src="https://images.unsplash.com/photo-1504384764586-bb4cdc1707b0?auto=format&fit=crop&w=1920&q=80" class="hero-img" alt="Projects">
+  <div style="position:relative;z-index:2;max-width:800px;">
+    <div class="breadcrumb"><a href="index.html">Home</a><span>›</span><span>Projects</span></div>
+    <div class="page-hero-label">Case Studies</div>
+    <h1 class="page-hero-title">Real work,<br><span>real results</span></h1>
+    <p class="page-hero-desc">From healthcare platforms and enterprise ERPs to sustainability innovations — a portfolio of solutions that have delivered measurable impact across industries.</p>
+  </div>
+</div>
+
+<!-- FEATURED: RF Power -->
+<section class="cs">
+  <div class="inner">
+    <div class="sec-label reveal">Flagship Innovation</div>
+    <h2 class="sec-title reveal rd1">Featured <span>Project</span></h2>
+    <div class="featured-project reveal rd2">
+      <div class="fp-image">
+        <div class="fp-badge">⭐ Flagship Product</div>
+        <img src="https://images.unsplash.com/photo-1609091839311-d5365f9ff1c5?auto=format&fit=crop&w=900&q=80" alt="RF Power">
+      </div>
+      <div class="fp-content">
+        <div class="fp-category">Sustainability · Clean Energy · Hardware</div>
+        <div class="fp-title">RF Power</div>
+        <div class="fp-subtitle">Professional Portable Power Supply</div>
+        <p class="fp-desc">A breakthrough in sustainable portable energy — RF Power delivers 240V output from a compact lithium-ion unit, replacing diesel generators entirely. Engineered with military-grade materials and IEC Class II compliance, it eliminates toxic fumes, tripping hazards, and carbon-intensive fuel dependency.</p>
+        <div class="fp-stats">
+          <div class="fp-stat"><div class="fp-stat-val">1.2kWh</div><div class="fp-stat-label">Energy Capacity</div></div>
+          <div class="fp-stat"><div class="fp-stat-val">720L</div><div class="fp-stat-label">Fuel Saved / Year</div></div>
+          <div class="fp-stat"><div class="fp-stat-val">1,690kg</div><div class="fp-stat-label">CO₂ Prevented / Year</div></div>
+        </div>
+        <ul class="fp-highlights">
+          <li>240V output · 1000W rated · 2000W peak power delivery</li>
+          <li>16 kg portable form factor — full workday operation</li>
+          <li>5-hour recharge · 4-year warranty · 10-year battery life</li>
+          <li>Military-grade materials · IEC protection class II</li>
+          <li>No toxic emissions · no grounding requirement · zero maintenance fumes</li>
+        </ul>
+        <div class="fp-tech" style="margin-top:24px;">
+          <span class="tech-tag">Lithium Ion</span><span class="tech-tag">Power Electronics</span>
+          <span class="tech-tag">IEC Class II</span><span class="tech-tag">Clean Energy</span><span class="tech-tag">IoT-Ready</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HUSK WOOD EXTRACTION PROJECT -->
+<section class="cs alt">
+  <div class="inner">
+    <div class="sec-label reveal">Sustainability Innovation</div>
+    <h2 class="sec-title reveal rd1">Husk Wood <span>Extraction Project</span></h2>
+    <p style="color:var(--text-secondary);font-size:1rem;line-height:1.8;max-width:700px;margin-bottom:40px;" class="reveal rd2">An agri-tech initiative transforming agricultural waste into high-value biomass materials — combining IoT monitoring, AI-driven process control, and sustainable engineering to build a circular economy solution.</p>
+    <div class="husk-project reveal rd3">
+      <div class="husk-inner">
+        <div class="husk-image">
+          <div class="husk-badge">🌿 Sustainability</div>
+          <img src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=900&q=80" alt="Husk Wood Extraction">
+        </div>
+        <div class="husk-content">
+          <div class="fp-category" style="color:var(--accent-green);">Agri-Tech · IoT · Sustainability · Process Engineering</div>
+          <div class="fp-title" style="font-size:1.8rem;">Husk Wood Extraction System</div>
+          <div class="fp-subtitle" style="color:rgba(0,255,136,.7);">Agricultural Waste-to-Resource Platform</div>
+          <p class="fp-desc">A full-stack smart extraction system that processes agricultural husk and biomass residue into usable wood-equivalent material. The platform integrates real-time IoT sensors, automated process controls, and an AI-powered quality monitoring layer to ensure consistent output quality while maximising raw material yield.</p>
+          <div class="fp-stats">
+            <div class="fp-stat" style="background:rgba(0,255,136,.06);border-color:rgba(0,255,136,.15);">
+              <div class="fp-stat-val" style="color:var(--accent-green);">85%</div>
+              <div class="fp-stat-label">Waste Utilisation</div>
+            </div>
+            <div class="fp-stat" style="background:rgba(0,255,136,.06);border-color:rgba(0,255,136,.15);">
+              <div class="fp-stat-val" style="color:var(--accent-green);">60%</div>
+              <div class="fp-stat-label">Cost Reduction</div>
+            </div>
+            <div class="fp-stat" style="background:rgba(0,255,136,.06);border-color:rgba(0,255,136,.15);">
+              <div class="fp-stat-val" style="color:var(--accent-green);">Zero</div>
+              <div class="fp-stat-label">Landfill Output</div>
+            </div>
+          </div>
+          <ul class="fp-highlights">
+            <li>IoT sensor network monitors temperature, moisture & pressure in real time</li>
+            <li>AI-driven quality control ensures consistent biomass output grade</li>
+            <li>Automated extraction process reduces manual intervention by 70%</li>
+            <li>Scalable modular design — deployable at farm, co-op or industrial level</li>
+            <li>Integrated traceability dashboard for compliance and certification</li>
+            <li>Generates carbon credits through verified waste-to-resource conversion</li>
+          </ul>
+          <div class="fp-tech" style="margin-top:24px;">
+            <span class="tech-tag" style="color:var(--accent-green);border-color:rgba(0,255,136,.3);background:rgba(0,255,136,.08);">IoT Sensors</span>
+            <span class="tech-tag" style="color:var(--accent-green);border-color:rgba(0,255,136,.3);background:rgba(0,255,136,.08);">AI / ML</span>
+            <span class="tech-tag" style="color:var(--accent-green);border-color:rgba(0,255,136,.3);background:rgba(0,255,136,.08);">Process Automation</span>
+            <span class="tech-tag" style="color:var(--accent-green);border-color:rgba(0,255,136,.3);background:rgba(0,255,136,.08);">Biomass Engineering</span>
+            <span class="tech-tag" style="color:var(--accent-green);border-color:rgba(0,255,136,.3);background:rgba(0,255,136,.08);">Carbon Credits</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- OTHER PROJECTS -->
+<section class="cs">
+  <div class="inner">
+    <div class="sec-label reveal">Enterprise Delivery</div>
+    <h2 class="sec-title reveal rd1">More <span>Projects</span></h2>
+    <div class="projects-grid">
+
+      <div class="proj-card wide reveal rd1">
+        <img src="https://images.unsplash.com/photo-1538108149393-fbbd81895907?auto=format&fit=crop&w=1200&q=80" class="proj-img" alt="Hospital EHR">
+        <div class="proj-body">
+          <div class="proj-category">HMMS · Healthcare IT</div>
+          <div class="proj-name">Hospital Network EHR Platform</div>
+          <p class="proj-desc">End-to-end electronic health records and hospital management system deployed across a multi-location hospital network, serving 500+ beds with real-time patient tracking, integrated pharmacy, and insurance billing automation.</p>
+          <ul class="proj-outcomes">
+            <li>50% reduction in patient wait times via smart scheduling</li>
+            <li>99.9% uptime across 3 hospital locations</li>
+            <li>Full HL7/FHIR compliance for interoperability</li>
+          </ul>
+          <div class="proj-tech"><span class="tech-tag">React</span><span class="tech-tag">Node.js</span><span class="tech-tag">PostgreSQL</span><span class="tech-tag">AWS</span><span class="tech-tag">HL7/FHIR</span></div>
+        </div>
+      </div>
+
+      <div class="proj-card reveal rd2">
+        <img src="https://images.unsplash.com/photo-1565688534245-05d6b5be184a?auto=format&fit=crop&w=800&q=80" class="proj-img" alt="Manufacturing ERP">
+        <div class="proj-body">
+          <div class="proj-category">ERP · Manufacturing</div>
+          <div class="proj-name">Manufacturing ERP Suite</div>
+          <p class="proj-desc">Integrated ERP covering procurement, production, inventory, and finance for a mid-size manufacturing firm — reducing operational overhead by 35% within the first year.</p>
+          <ul class="proj-outcomes">
+            <li>35% reduction in operational overhead</li>
+            <li>Real-time inventory accuracy improved to 98%</li>
+          </ul>
+          <div class="proj-tech"><span class="tech-tag">Vue.js</span><span class="tech-tag">Python</span><span class="tech-tag">Oracle DB</span><span class="tech-tag">Azure</span></div>
+        </div>
+      </div>
+
+      <div class="proj-card reveal rd3">
+        <img src="https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&w=800&q=80" class="proj-img" alt="Enterprise Risk">
+        <div class="proj-body">
+          <div class="proj-category">ERM · Banking & Finance</div>
+          <div class="proj-name">Enterprise Risk Dashboard</div>
+          <p class="proj-desc">Real-time risk monitoring and compliance management platform for a leading NBFC, with automated regulatory reporting and risk heat map visualisation.</p>
+          <ul class="proj-outcomes">
+            <li>Automated 12 regulatory reports monthly</li>
+            <li>Risk identification time cut by 60%</li>
+          </ul>
+          <div class="proj-tech"><span class="tech-tag">Angular</span><span class="tech-tag">Java</span><span class="tech-tag">MongoDB</span><span class="tech-tag">Power BI</span></div>
+        </div>
+      </div>
+
+      <div class="proj-card reveal rd1">
+        <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=800&q=80" class="proj-img" alt="Facility Management">
+        <div class="proj-body">
+          <div class="proj-category">FMMS · Real Estate</div>
+          <div class="proj-name">Smart Facility Operations</div>
+          <p class="proj-desc">IoT-integrated facility management system for a commercial real estate portfolio spanning 2M sq ft, with predictive maintenance alerts and energy consumption analytics.</p>
+          <ul class="proj-outcomes">
+            <li>28% reduction in energy costs</li>
+            <li>Maintenance response time halved</li>
+          </ul>
+          <div class="proj-tech"><span class="tech-tag">React Native</span><span class="tech-tag">Node.js</span><span class="tech-tag">InfluxDB</span><span class="tech-tag">IoT</span></div>
+        </div>
+      </div>
+
+      <div class="proj-card reveal rd2">
+        <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=800&q=80" class="proj-img" alt="CRM Analytics">
+        <div class="proj-body">
+          <div class="proj-category">CRM · Retail</div>
+          <div class="proj-name">AI-Powered Sales CRM</div>
+          <p class="proj-desc">Custom CRM with AI-powered lead scoring, 360° customer view, and automated WhatsApp + email engagement flows for a fast-growing retail brand.</p>
+          <ul class="proj-outcomes">
+            <li>42% increase in sales conversion</li>
+            <li>Customer response time under 2 minutes</li>
+          </ul>
+          <div class="proj-tech"><span class="tech-tag">Next.js</span><span class="tech-tag">FastAPI</span><span class="tech-tag">Redis</span><span class="tech-tag">Salesforce API</span></div>
+        </div>
+      </div>
+
+      <div class="proj-card reveal rd3">
+        <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=800&q=80" class="proj-img" alt="EIS Analytics">
+        <div class="proj-body">
+          <div class="proj-category">EIS · Wholesale Distribution</div>
+          <div class="proj-name">Executive Intelligence System</div>
+          <p class="proj-desc">A unified enterprise information platform delivering cross-department KPI dashboards, predictive analytics, and automated board-level reporting for a wholesale distribution group.</p>
+          <ul class="proj-outcomes">
+            <li>C-suite reporting time reduced from 3 days to 4 hours</li>
+            <li>12 departments unified on single data platform</li>
+          </ul>
+          <div class="proj-tech"><span class="tech-tag">Power BI</span><span class="tech-tag">Azure Synapse</span><span class="tech-tag">Python</span><span class="tech-tag">SQL Server</span></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<div class="cta-banner">
+  <h2>Have a project <span>in mind?</span></h2>
+  <p>Let's discuss your challenge and build something that makes a real difference.</p>
+  <a href="collaborate.html" class="btn-primary">Start a Conversation →</a>
+  <a href="services.html" class="btn-secondary">View Services</a>
+</div>
+
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <a href="index.html" class="nav-logo"><img src="logo.svg" alt="Rapdfly Logo" class="logo-img">Rapd<span>fly</span></a>
+      <p class="footer-desc">Value Adding Service Provider. Established in 2020, Rapdfly delivers enterprise IT solutions that put you first.</p>
+    </div>
+    <div><div class="footer-heading">Services</div><ul class="footer-links"><li><a href="services.html">Consulting</a></li><li><a href="services.html">Technology</a></li><li><a href="services.html">Enterprise IT</a></li></ul></div>
+    <div><div class="footer-heading">Company</div><ul class="footer-links"><li><a href="about.html">About Us</a></li><li><a href="projects.html">Projects</a></li><li><a href="team.html">Team</a></li><li><a href="collaborate.html">Collaborate</a></li></ul></div>
+    <div><div class="footer-heading">Contact</div><ul class="footer-links"><li><a href="tel:+919688685240">+91 96886 85240</a></li><li><a href="mailto:venkat@rapdfly.com">venkat@rapdfly.com</a></li><li><a href="#">Bangalore, Karnataka</a></li></ul></div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-copy">© 2024 <span>Rapdfly</span>. All rights reserved.</div>
+    <div style="font-size:.8rem;color:var(--text-muted);">Est. 2020 · Bangalore, India</div>
+  </div>
+</footer>
+
+<script>
+(function(){const canvas=document.getElementById('bg-canvas');const renderer=new THREE.WebGLRenderer({canvas,antialias:true,alpha:true});renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));renderer.setSize(window.innerWidth,window.innerHeight);const scene=new THREE.Scene();const camera=new THREE.PerspectiveCamera(60,window.innerWidth/window.innerHeight,0.1,1000);camera.position.z=50;const count=500;const pos=new Float32Array(count*3);const col=new Float32Array(count*3);for(let i=0;i<count;i++){pos[i*3]=(Math.random()-.5)*200;pos[i*3+1]=(Math.random()-.5)*200;pos[i*3+2]=(Math.random()-.5)*200;const t=Math.random();col[i*3]=t<.5?0:.6;col[i*3+1]=t<.5?.83:.33;col[i*3+2]=1;}const geo=new THREE.BufferGeometry();geo.setAttribute('position',new THREE.BufferAttribute(pos,3));geo.setAttribute('color',new THREE.BufferAttribute(col,3));scene.add(new THREE.Points(geo,new THREE.PointsMaterial({size:.35,vertexColors:true,transparent:true,opacity:.4})));(function animate(){requestAnimationFrame(animate);renderer.render(scene,camera);})();window.addEventListener('resize',()=>{camera.aspect=window.innerWidth/window.innerHeight;camera.updateProjectionMatrix();renderer.setSize(window.innerWidth,window.innerHeight);});})();
+window.addEventListener('scroll',()=>document.getElementById('navbar').classList.toggle('scrolled',window.scrollY>60));
+function toggleMenu(){document.getElementById('navLinks').classList.toggle('open');}
+document.querySelectorAll('.nav-links a').forEach(a=>a.addEventListener('click',()=>document.getElementById('navLinks').classList.remove('open')));
+const obs=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');}),{threshold:.1,rootMargin:'0px 0px -60px 0px'});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+
+
+// Theme-aware particle/shape recolour
+var PARTICLE_COLORS={p1:[0,0.83,1],p2:[0.6,0.33,0.93],shape:0x00d4ff,shapeOp:0.12,particleOp:0.6};
+  var pal=PARTICLE_COLORS;
+  var col=pGeo.attributes.color.array;
+  for(var i=0;i<particleCount;i++){var c=tVals[i]<0.5?pal.p1:pal.p2;col[i*3]=c[0];col[i*3+1]=c[1];col[i*3+2]=c[2];}
+  pGeo.attributes.color.needsUpdate=true;
+  shapes.forEach(function(s){s.material.color.setHex(pal.shape);s.material.opacity=pal.shapeOp;});
+}
+
+</script>
+</body>
+</html>

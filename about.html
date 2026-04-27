@@ -1,0 +1,959 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About Us — Rapdfly</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<style>
+:root {
+  --bg-primary: #020408;
+  --bg-secondary: #050d18;
+  --bg-card: rgba(10, 25, 47, 0.7);
+  --accent-blue: #00d4ff;
+  --accent-cyan: #00fff7;
+  --accent-purple: #7c3aed;
+  --accent-violet: #a855f7;
+  --accent-green: #00ff88;
+  --text-primary: #e2e8f0;
+  --text-secondary: #94a3b8;
+  --text-muted: #475569;
+  --glass: rgba(0, 212, 255, 0.05);
+  --glass-border: rgba(0, 212, 255, 0.15);
+  --font-main: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  --transition: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+a, button, [onclick] { cursor: pointer; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: var(--font-main);
+  overflow-x: hidden;
+}
+
+/* ── Canvas ── */
+#bg-canvas {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* ── Navigation ── */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 1000;
+  padding: 20px 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(2, 4, 8, 0.6);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--glass-border);
+  transition: var(--transition);
+}
+nav.scrolled { padding: 14px 60px; background: rgba(2, 4, 8, 0.9); }
+.nav-logo {
+  font-size: 1.8rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  background: linear-gradient(135deg, var(--accent-blue), var(--accent-violet));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-decoration: none;
+}
+.nav-logo span { -webkit-text-fill-color: var(--accent-cyan); }
+.nav-links { display: flex; gap: 40px; list-style: none; }
+.nav-links a {
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  transition: color 0.3s;
+  position: relative;
+}
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  bottom: -4px; left: 0;
+  width: 0; height: 1px;
+  background: var(--accent-blue);
+  transition: width 0.3s;
+}
+.nav-links a:hover, .nav-links a.active { color: var(--accent-blue); }
+.nav-links a:hover::after, .nav-links a.active::after { width: 100%; }
+.nav-cta {
+  padding: 10px 28px;
+  border: 1px solid var(--accent-blue);
+  border-radius: 50px;
+  color: var(--accent-blue) !important;
+  transition: all 0.3s !important;
+}
+.nav-cta:hover {
+  background: var(--accent-blue) !important;
+  color: #000 !important;
+  -webkit-text-fill-color: #000 !important;
+  box-shadow: 0 0 30px rgba(0, 212, 255, 0.4);
+}
+.nav-cta::after { display: none !important; }
+.hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px; }
+.hamburger span { display: block; width: 24px; height: 2px; background: var(--accent-blue); transition: all 0.3s; }
+
+/* ── Hero Banner ── */
+.page-hero {
+  position: relative;
+  z-index: 1;
+  min-height: 50vh;
+  display: flex;
+  align-items: center;
+  padding: 160px 60px 100px;
+  overflow: hidden;
+}
+.page-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 60% 50%, rgba(0,212,255,0.08) 0%, transparent 60%),
+              radial-gradient(ellipse at 20% 70%, rgba(124,58,237,0.1) 0%, transparent 50%);
+  pointer-events: none;
+}
+.grid-bg {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(0,212,255,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,212,255,0.03) 1px, transparent 1px);
+  background-size: 60px 60px;
+  pointer-events: none;
+}
+.page-hero-content { max-width: 800px; position: relative; z-index: 2; }
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-bottom: 24px;
+}
+.breadcrumb a { color: var(--accent-blue); text-decoration: none; }
+.breadcrumb span { color: var(--text-muted); }
+.page-hero-label {
+  font-size: 0.75rem;
+  color: var(--accent-blue);
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.page-hero-label::before { content: ''; width: 32px; height: 1px; background: var(--accent-blue); }
+.page-hero-title {
+  font-size: clamp(2.8rem, 6vw, 5.5rem);
+  font-weight: 900;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  margin-bottom: 24px;
+}
+.page-hero-title span {
+  background: linear-gradient(135deg, var(--accent-blue), var(--accent-violet));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.page-hero-desc {
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  line-height: 1.8;
+  max-width: 600px;
+}
+
+/* ── Sections ── */
+section.content-section {
+  position: relative;
+  z-index: 1;
+  padding: 100px 60px;
+}
+section.content-section.alt { background: var(--bg-secondary); }
+
+.section-label {
+  font-size: 0.75rem;
+  color: var(--accent-blue);
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.section-label::before { content: ''; width: 32px; height: 1px; background: var(--accent-blue); }
+.section-title {
+  font-size: clamp(1.8rem, 3.5vw, 3rem);
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  margin-bottom: 20px;
+}
+.section-title span {
+  background: linear-gradient(135deg, var(--accent-blue), var(--accent-violet));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.inner { max-width: 1200px; margin: 0 auto; }
+
+/* ── Story Section ── */
+.story-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: center;
+}
+.story-text p {
+  font-size: 1.05rem;
+  color: var(--text-secondary);
+  line-height: 1.9;
+  margin-bottom: 24px;
+}
+.story-visual {
+  position: relative;
+  height: 420px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.story-3d-box {
+  width: 260px; height: 260px;
+  transform-style: preserve-3d;
+  animation: rotate-box 14s linear infinite;
+}
+@keyframes rotate-box {
+  from { transform: rotateX(20deg) rotateY(0deg); }
+  to   { transform: rotateX(20deg) rotateY(360deg); }
+}
+.box-face {
+  position: absolute;
+  width: 260px; height: 260px;
+  border: 1px solid rgba(0,212,255,0.2);
+  background: rgba(0,212,255,0.03);
+  backdrop-filter: blur(4px);
+}
+.box-face.front  { transform: translateZ(130px); }
+.box-face.back   { transform: rotateY(180deg) translateZ(130px); }
+.box-face.left   { transform: rotateY(-90deg) translateZ(130px); }
+.box-face.right  { transform: rotateY(90deg) translateZ(130px); }
+.box-face.top    { transform: rotateX(90deg) translateZ(130px); }
+.box-face.bottom { transform: rotateX(-90deg) translateZ(130px); }
+.orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(50px);
+  pointer-events: none;
+}
+.orb-a { width: 180px; height: 180px; background: rgba(0,212,255,0.12); top: 10%; left: 5%; }
+.orb-b { width: 140px; height: 140px; background: rgba(124,58,237,0.18); bottom: 10%; right: 5%; }
+
+/* ── Mission / Vision ── */
+.mv-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin-top: 0;
+}
+.mv-card {
+  padding: 48px 40px;
+  background: var(--bg-card);
+  border: 1px solid var(--glass-border);
+  border-radius: 24px;
+  backdrop-filter: blur(20px);
+  position: relative;
+  overflow: hidden;
+  transition: all 0.4s;
+}
+.mv-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+}
+.mv-card.mission::before { background: linear-gradient(90deg, var(--accent-blue), var(--accent-cyan)); }
+.mv-card.vision::before  { background: linear-gradient(90deg, var(--accent-purple), var(--accent-violet)); }
+.mv-card:hover { transform: translateY(-6px); border-color: rgba(0,212,255,0.3); box-shadow: 0 20px 60px rgba(0,212,255,0.08); }
+.mv-icon { font-size: 2.8rem; margin-bottom: 20px; display: block; }
+.mv-title { font-size: 1.3rem; font-weight: 800; margin-bottom: 16px; color: var(--text-primary); }
+.mv-desc { font-size: 0.95rem; color: var(--text-secondary); line-height: 1.8; }
+
+/* ── Core Values ── */
+.values-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+.value-card {
+  padding: 36px 28px;
+  background: var(--bg-card);
+  border: 1px solid var(--glass-border);
+  border-radius: 20px;
+  backdrop-filter: blur(20px);
+  text-align: center;
+  transition: all 0.4s;
+  position: relative;
+  overflow: hidden;
+}
+.value-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 0%, rgba(0,212,255,0.08), transparent 60%);
+  opacity: 0;
+  transition: opacity 0.4s;
+}
+.value-card:hover { transform: translateY(-8px); border-color: rgba(0,212,255,0.35); }
+.value-card:hover::after { opacity: 1; }
+.value-icon { font-size: 2.5rem; margin-bottom: 16px; display: block; }
+.value-name { font-size: 1rem; font-weight: 700; color: var(--text-primary); margin-bottom: 10px; }
+.value-desc { font-size: 0.82rem; color: var(--text-muted); line-height: 1.6; }
+
+/* ── Founders ── */
+.founders-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 28px;
+}
+.founder-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 28px;
+  padding: 44px 40px;
+  background: var(--bg-card);
+  border: 1px solid var(--glass-border);
+  border-radius: 24px;
+  backdrop-filter: blur(20px);
+  transition: all 0.4s;
+  position: relative;
+  overflow: hidden;
+}
+.founder-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--accent-blue), var(--accent-violet));
+}
+.founder-card:hover { transform: translateY(-6px); border-color: rgba(0,212,255,0.4); box-shadow: 0 24px 60px rgba(0,212,255,0.1); }
+.founder-avatar {
+  width: 80px; height: 80px;
+  border-radius: 18px;
+  background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: #fff;
+  flex-shrink: 0;
+  letter-spacing: 0.05em;
+  box-shadow: 0 8px 24px rgba(0,212,255,0.3);
+}
+.founder-info { flex: 1; }
+.founder-name { font-size: 1.15rem; font-weight: 800; color: var(--text-primary); margin-bottom: 4px; }
+.founder-title {
+  font-size: 0.75rem;
+  color: var(--accent-blue);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  margin-bottom: 16px;
+  font-weight: 600;
+}
+.founder-bio { font-size: 0.88rem; color: var(--text-secondary); line-height: 1.75; }
+
+/* ── Expertise + Industries ── */
+.expertise-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 28px;
+}
+.expertise-block {
+  padding: 44px 40px;
+  background: var(--bg-card);
+  border: 1px solid var(--glass-border);
+  border-radius: 24px;
+  backdrop-filter: blur(20px);
+}
+.expertise-label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--accent-blue);
+  margin-bottom: 24px;
+  font-weight: 600;
+}
+.expertise-tags { display: flex; flex-wrap: wrap; gap: 10px; }
+.exp-tag {
+  padding: 8px 18px;
+  border-radius: 50px;
+  font-size: 0.78rem;
+  font-weight: 500;
+  background: rgba(0,212,255,0.08);
+  border: 1px solid rgba(0,212,255,0.2);
+  color: var(--accent-cyan);
+  transition: all 0.3s;
+}
+.exp-tag:hover { background: rgba(0,212,255,0.18); border-color: var(--accent-blue); transform: translateY(-2px); }
+.exp-tag.ind {
+  background: rgba(124,58,237,0.08);
+  border-color: rgba(124,58,237,0.25);
+  color: var(--accent-violet);
+}
+.exp-tag.ind:hover { background: rgba(124,58,237,0.18); border-color: var(--accent-violet); }
+
+/* ── Timeline ── */
+.timeline { position: relative; padding-left: 32px; }
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 1px;
+  background: linear-gradient(180deg, var(--accent-blue), var(--accent-purple), transparent);
+}
+.timeline-item { position: relative; margin-bottom: 48px; }
+.timeline-item::before {
+  content: '';
+  position: absolute;
+  left: -38px; top: 6px;
+  width: 12px; height: 12px;
+  border-radius: 50%;
+  background: var(--accent-blue);
+  box-shadow: 0 0 16px var(--accent-blue);
+}
+.timeline-year {
+  font-size: 0.75rem;
+  color: var(--accent-blue);
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+.timeline-event { font-size: 1.1rem; font-weight: 700; color: var(--text-primary); margin-bottom: 8px; }
+.timeline-detail { font-size: 0.9rem; color: var(--text-secondary); line-height: 1.7; }
+
+/* ── CTA Banner ── */
+.cta-banner {
+  position: relative;
+  z-index: 1;
+  padding: 100px 60px;
+  text-align: center;
+  background: linear-gradient(135deg, rgba(0,212,255,0.06), rgba(124,58,237,0.08));
+  border-top: 1px solid var(--glass-border);
+  border-bottom: 1px solid var(--glass-border);
+}
+.cta-banner h2 { font-size: clamp(2rem, 4vw, 3rem); font-weight: 800; margin-bottom: 16px; letter-spacing: -0.02em; }
+.cta-banner h2 span {
+  background: linear-gradient(135deg, var(--accent-blue), var(--accent-violet));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.cta-banner p { color: var(--text-secondary); font-size: 1.05rem; margin-bottom: 40px; }
+.btn-primary {
+  padding: 16px 44px;
+  background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+  color: #fff;
+  border: none;
+  border-radius: 50px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.3s;
+  box-shadow: 0 0 40px rgba(0,212,255,0.3);
+}
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 0 60px rgba(0,212,255,0.5); }
+.btn-secondary {
+  padding: 16px 44px;
+  background: transparent;
+  color: var(--text-primary);
+  border: 1px solid var(--glass-border);
+  border-radius: 50px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.3s;
+  margin-left: 16px;
+}
+.btn-secondary:hover { border-color: var(--accent-blue); color: var(--accent-blue); }
+
+/* ── Footer ── */
+footer {
+  position: relative;
+  z-index: 1;
+  background: var(--bg-primary);
+  border-top: 1px solid var(--glass-border);
+  padding: 60px 60px 40px;
+}
+.footer-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 60px;
+  max-width: 1200px;
+  margin: 0 auto 60px;
+}
+.footer-brand .nav-logo { font-size: 1.5rem; display: block; margin-bottom: 16px; }
+.footer-desc { font-size: 0.9rem; color: var(--text-muted); line-height: 1.7; margin-bottom: 24px; }
+.footer-heading { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--text-secondary); margin-bottom: 20px; font-weight: 600; }
+.footer-links { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+.footer-links a { color: var(--text-muted); text-decoration: none; font-size: 0.9rem; transition: color 0.3s; }
+.footer-links a:hover { color: var(--accent-blue); }
+.footer-bottom {
+  border-top: 1px solid var(--glass-border);
+  padding-top: 32px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+.footer-copy { font-size: 0.85rem; color: var(--text-muted); }
+.footer-copy span { color: var(--accent-blue); }
+
+/* ── Reveal ── */
+.reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+.reveal-delay-1 { transition-delay: 0.1s; }
+.reveal-delay-2 { transition-delay: 0.2s; }
+.reveal-delay-3 { transition-delay: 0.3s; }
+
+/* ── Responsive ── */
+@media (max-width: 1024px) {
+  .values-grid { grid-template-columns: 1fr 1fr; }
+  .story-grid { grid-template-columns: 1fr; }
+  .story-visual { display: none; }
+  .footer-grid { grid-template-columns: 1fr 1fr; gap: 40px; }
+}
+@media (max-width: 768px) {
+  nav { padding: 16px 24px; }
+  .page-hero { padding: 140px 24px 80px; }
+  section.content-section { padding: 60px 24px; }
+  .nav-links { display: none; }
+  .nav-links.open {
+    display: flex; flex-direction: column;
+    position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(2,4,8,0.97);
+    align-items: center; justify-content: center; gap: 32px; z-index: 999;
+  }
+  .nav-links.open a { font-size: 1.2rem; }
+  .hamburger { display: flex; z-index: 1001; }
+  .mv-grid { grid-template-columns: 1fr; }
+  .founders-grid { grid-template-columns: 1fr; }
+  .founder-card { flex-direction: column; }
+  .expertise-grid { grid-template-columns: 1fr; }
+  .footer-grid { grid-template-columns: 1fr; gap: 32px; }
+  .footer-bottom { flex-direction: column; text-align: center; }
+  .btn-secondary { margin-left: 0; margin-top: 12px; }
+  .cta-banner .btn-secondary { display: block; width: fit-content; margin: 12px auto 0; }
+}
+
+
+
+/* ── Logo image ── */
+.logo-img{height:34px;width:34px;border-radius:6px;margin-right:10px;vertical-align:middle;flex-shrink:0;display:inline-block;}
+/* ── Theme toggle ── */
+/* ══ LIGHT MODE — full contrast system ══ */
+</style>
+</head>
+<body>
+
+<canvas id="bg-canvas"></canvas>
+
+<!-- Navigation -->
+<nav id="navbar">
+  <a href="index.html" class="nav-logo"><img src="logo.svg" alt="Rapdfly Logo" class="logo-img">Rapd<span>fly</span></a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="about.html" class="active">About Us</a></li>
+    <li><a href="index.html#services">Services</a></li>
+    <li><a href="index.html#projects">Projects</a></li>
+    <li><a href="index.html#team">Team</a></li>
+    <li><a href="index.html#contact" class="nav-cta">Let's Collaborate</a></li>
+  </ul>
+  <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- ── PAGE HERO ── -->
+<div class="page-hero">
+  <div class="grid-bg"></div>
+  <div class="page-hero-content">
+    <div class="breadcrumb">
+      <a href="index.html">Home</a>
+      <span>›</span>
+      <span>About Us</span>
+    </div>
+    <div class="page-hero-label">Who We Are</div>
+    <h1 class="page-hero-title">
+      Where purpose<br>meets <span>precision</span>
+    </h1>
+    <p class="page-hero-desc">
+      A one-stop technology partner born from the belief that every business deserves rapid,
+      meaningful value — delivered with integrity, expertise, and a genuine care for your growth.
+    </p>
+  </div>
+</div>
+
+<!-- ── OUR STORY ── -->
+<section class="content-section">
+  <div class="inner">
+    <div class="story-grid">
+      <div class="story-text">
+        <div class="section-label reveal">Our Story</div>
+        <h2 class="section-title reveal reveal-delay-1">From a bold idea<br>to a <span>thriving force</span></h2>
+        <p class="reveal reveal-delay-2">
+          Rapdfly was founded in July 2020 with a clear and ambitious vision — to become the most
+          reliable value-adding partner for businesses navigating a rapidly evolving digital landscape.
+          What began as a consulting play in e-commerce and technology implementations quickly grew
+          into something far bigger.
+        </p>
+        <p class="reveal reveal-delay-2">
+          Our founders recognised that businesses weren't just searching for software vendors — they
+          needed a trusted co-pilot. Someone who understood their goals, spoke their language, and
+          had the technical depth to turn strategy into reality. That insight became the DNA of Rapdfly.
+        </p>
+        <p class="reveal reveal-delay-2">
+          Today we operate across sales & marketing, branding, CRM, web development, AI, IoT, and
+          enterprise systems — serving clients in manufacturing, banking, retail, and beyond.
+          Every engagement is anchored in one principle: <em style="color:var(--accent-cyan);">add real value, every time.</em>
+        </p>
+      </div>
+      <div class="story-visual">
+        <div class="orb orb-a"></div>
+        <div class="orb orb-b"></div>
+        <div class="story-3d-box" style="transform-style:preserve-3d;">
+          <div class="box-face front"></div>
+          <div class="box-face back"></div>
+          <div class="box-face left"></div>
+          <div class="box-face right"></div>
+          <div class="box-face top"></div>
+          <div class="box-face bottom"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── MISSION & VISION ── -->
+<section class="content-section alt">
+  <div class="inner">
+    <div class="section-label reveal" style="justify-content:center; margin-bottom:48px;">Purpose & Direction</div>
+    <div class="mv-grid">
+      <div class="mv-card mission reveal reveal-delay-1">
+        <span class="mv-icon">🎯</span>
+        <div class="mv-title">Our Mission</div>
+        <p class="mv-desc">
+          To add sustained, measurable value to every customer we serve — through innovative
+          technology, strategic consulting, and a relentless commitment to excellence. We don't
+          stop at delivery; we stay with you through every stage of growth, adapting and evolving
+          alongside your ambitions.
+        </p>
+      </div>
+      <div class="mv-card vision reveal reveal-delay-2">
+        <span class="mv-icon">🔭</span>
+        <div class="mv-title">Our Vision</div>
+        <p class="mv-desc">
+          To be the most trusted technology partner for businesses across industries — building
+          an ecosystem of partnerships, products, and people that consistently drives faster,
+          smarter, and more sustainable growth in a connected world.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CORE VALUES ── -->
+<section class="content-section">
+  <div class="inner">
+    <div style="text-align:center; margin-bottom:60px;">
+      <div class="section-label reveal" style="justify-content:center;">What Drives Us</div>
+      <h2 class="section-title reveal reveal-delay-1">Our <span>Core Values</span></h2>
+    </div>
+    <div class="values-grid">
+      <div class="value-card reveal reveal-delay-1">
+        <span class="value-icon">⚡</span>
+        <div class="value-name">Accelerate Technology</div>
+        <p class="value-desc">We embrace and deploy cutting-edge tools at the speed your business demands — never falling behind the curve of innovation.</p>
+      </div>
+      <div class="value-card reveal reveal-delay-2">
+        <span class="value-icon">🤝</span>
+        <div class="value-name">Collaborate for Better</div>
+        <p class="value-desc">True partnerships, not transactions. Your goals become our mission and your wins become our measure of success.</p>
+      </div>
+      <div class="value-card reveal reveal-delay-3">
+        <span class="value-icon">🚀</span>
+        <div class="value-name">Empower Businesses</div>
+        <p class="value-desc">We hand you the tools, strategy, and support to unlock your full potential — then step back and watch you soar.</p>
+      </div>
+      <div class="value-card reveal" style="transition-delay:0.4s;">
+        <span class="value-icon">🌿</span>
+        <div class="value-name">Sustainability at Core</div>
+        <p class="value-desc">We build for the long run — solutions that are responsible, resilient, and designed to serve people, planet, and profit equally.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── LEADERSHIP ── -->
+<section class="content-section alt">
+  <div class="inner">
+    <div style="margin-bottom:60px;">
+      <div class="section-label reveal">The People Behind Rapdfly</div>
+      <h2 class="section-title reveal reveal-delay-1">Meet Our <span>Founders</span></h2>
+    </div>
+    <div class="founders-grid">
+      <div class="founder-card reveal reveal-delay-1">
+        <div class="founder-avatar">VJ</div>
+        <div class="founder-info">
+          <div class="founder-name">Venkataswara Jagadeesan</div>
+          <div class="founder-title">CEO &amp; Founder</div>
+          <p class="founder-bio">
+            A visionary entrepreneur who built Rapdfly from the ground up with a singular conviction —
+            that businesses deserve a partner who genuinely cares about their outcomes.
+            Venkataswara leads with a hands-on approach across client strategy, product direction,
+            and business development, weaving deep domain expertise with a sharp eye for
+            transformative opportunity.
+          </p>
+        </div>
+      </div>
+      <div class="founder-card reveal reveal-delay-2">
+        <div class="founder-avatar">GK</div>
+        <div class="founder-info">
+          <div class="founder-name">Gowtham Kumar Palaniappan</div>
+          <div class="founder-title">CTO &amp; Co-Founder</div>
+          <p class="founder-bio">
+            Technology architect and growth strategist who drives Rapdfly's engineering excellence
+            and innovation agenda. Gowtham bridges the gap between complex technical realities and
+            clear business impact — ensuring every solution we deliver is robust, scalable,
+            and built to outlast the challenges of tomorrow.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── TIMELINE ── -->
+<section class="content-section">
+  <div class="inner" style="display:grid; grid-template-columns:1fr 1fr; gap:80px; align-items:start;">
+    <div>
+      <div class="section-label reveal">Our Journey</div>
+      <h2 class="section-title reveal reveal-delay-1">Built milestone<br>by <span>milestone</span></h2>
+      <p style="color:var(--text-secondary); font-size:1rem; line-height:1.8; margin-top:16px;" class="reveal reveal-delay-2">
+        Every chapter of Rapdfly's growth has been shaped by a commitment to expansion —
+        new services, new partnerships, new industries served.
+      </p>
+    </div>
+    <div class="timeline reveal reveal-delay-2">
+      <div class="timeline-item">
+        <div class="timeline-year">July 2020</div>
+        <div class="timeline-event">Rapdfly Founded</div>
+        <p class="timeline-detail">Launched with a focus on e-commerce consulting and technology implementation services.</p>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-year">2021</div>
+        <div class="timeline-event">Expanded into Enterprise IT</div>
+        <p class="timeline-detail">Grew service portfolio to include CRM, sales & marketing consulting, branding, and web development.</p>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-year">2022</div>
+        <div class="timeline-event">Multi-Industry Reach</div>
+        <p class="timeline-detail">Extended partnerships across manufacturing, banking & financial services, and consumer retail sectors.</p>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-year">2023 – Present</div>
+        <div class="timeline-event">Full-Spectrum IT Partner</div>
+        <p class="timeline-detail">Delivering AI, IoT, Big Data, ERP, and enterprise management systems — a true one-stop IT powerhouse.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── EXPERTISE & INDUSTRIES ── -->
+<section class="content-section alt">
+  <div class="inner">
+    <div style="text-align:center; margin-bottom:60px;">
+      <div class="section-label reveal" style="justify-content:center;">Capabilities</div>
+      <h2 class="section-title reveal reveal-delay-1">Expertise &amp; <span>Industries</span></h2>
+    </div>
+    <div class="expertise-grid">
+      <div class="expertise-block reveal reveal-delay-1">
+        <div class="expertise-label">Team Expertise</div>
+        <div class="expertise-tags">
+          <span class="exp-tag">Artificial Intelligence</span>
+          <span class="exp-tag">Internet of Things</span>
+          <span class="exp-tag">Big Data</span>
+          <span class="exp-tag">Salesforce</span>
+          <span class="exp-tag">E-Commerce</span>
+          <span class="exp-tag">CRM</span>
+          <span class="exp-tag">Web Design</span>
+          <span class="exp-tag">Digital Marketing</span>
+          <span class="exp-tag">Branding</span>
+          <span class="exp-tag">Consulting</span>
+          <span class="exp-tag">Supply Chain</span>
+        </div>
+      </div>
+      <div class="expertise-block reveal reveal-delay-2">
+        <div class="expertise-label">Industries Served</div>
+        <div class="expertise-tags">
+          <span class="exp-tag ind">Information Technology</span>
+          <span class="exp-tag ind">Manufacturing</span>
+          <span class="exp-tag ind">Banking &amp; Financial Services</span>
+          <span class="exp-tag ind">Consumer Retail</span>
+          <span class="exp-tag ind">Wholesale &amp; Distribution</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CTA ── -->
+<div class="cta-banner">
+  <h2>Ready to grow <span>together?</span></h2>
+  <p>Let's explore how Rapdfly can add real value to your business.</p>
+  <a href="index.html#contact" class="btn-primary">Start a Conversation →</a>
+  <a href="index.html#services" class="btn-secondary">View Services</a>
+</div>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <a href="index.html" class="nav-logo"><img src="logo.svg" alt="Rapdfly Logo" class="logo-img">Rapd<span>fly</span></a>
+      <p class="footer-desc">Value Adding Service Provider. Established in 2020, Rapdfly delivers enterprise IT solutions that put you first and support growth at every step.</p>
+    </div>
+    <div>
+      <div class="footer-heading">Services</div>
+      <ul class="footer-links">
+        <li><a href="index.html#services">ERP Solutions</a></li>
+        <li><a href="index.html#services">CRM Systems</a></li>
+        <li><a href="index.html#services">HMMS</a></li>
+        <li><a href="index.html#services">Cloud Solutions</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-heading">Company</div>
+      <ul class="footer-links">
+        <li><a href="about.html">About Us</a></li>
+        <li><a href="index.html#projects">Projects</a></li>
+        <li><a href="index.html#team">Team</a></li>
+        <li><a href="index.html#contact">Contact</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-heading">Contact</div>
+      <ul class="footer-links">
+        <li><a href="tel:+919688685240">+91 96886 85240</a></li>
+        <li><a href="mailto:venkat@rapdfly.com">venkat@rapdfly.com</a></li>
+        <li><a href="#">HSR Layout, Bangalore</a></li>
+        <li><a href="#">Karnataka — 560102</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-copy">© 2024 <span>Rapdfly</span>. All rights reserved. Uniqueness Overloaded.</div>
+    <div style="font-size:0.8rem; color:var(--text-muted);">Est. 2020 · Bangalore, India</div>
+  </div>
+</footer>
+
+<script>
+// ── Three.js background ───────────────────────────────────────────────────
+(function() {
+  const canvas = document.getElementById('bg-canvas');
+  const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+  camera.position.z = 50;
+
+  const count = 600;
+  const pos = new Float32Array(count * 3);
+  const col = new Float32Array(count * 3);
+  for (let i = 0; i < count; i++) {
+    pos[i*3]   = (Math.random() - 0.5) * 200;
+    pos[i*3+1] = (Math.random() - 0.5) * 200;
+    pos[i*3+2] = (Math.random() - 0.5) * 200;
+    const t = Math.random();
+    col[i*3] = t < 0.5 ? 0 : 0.6; col[i*3+1] = t < 0.5 ? 0.83 : 0.33; col[i*3+2] = 1;
+  }
+  const geo = new THREE.BufferGeometry();
+  geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+  geo.setAttribute('color', new THREE.BufferAttribute(col, 3));
+  scene.add(new THREE.Points(geo, new THREE.PointsMaterial({ size: 0.35, vertexColors: true, transparent: true, opacity: 0.5 })));
+
+  let mx = 0, my = 0;
+  document.addEventListener('mousemove', e => { mx = (e.clientX/window.innerWidth-0.5)*2; my = (e.clientY/window.innerHeight-0.5)*2; });
+
+  let t = 0;
+  (function animate() {
+    requestAnimationFrame(animate);
+    t += 0.008;
+    camera.position.x += (mx * 6 - camera.position.x) * 0.04;
+    camera.position.y += (-my * 3 - camera.position.y) * 0.04;
+    camera.lookAt(scene.position);
+    renderer.render(scene, camera);
+  })();
+
+  window.addEventListener('resize', () => {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+  });
+})();
+
+// ── Navbar scroll ─────────────────────────────────────────────────────────
+window.addEventListener('scroll', () => {
+  document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 60);
+});
+
+// ── Mobile menu ───────────────────────────────────────────────────────────
+function toggleMenu() { document.getElementById('navLinks').classList.toggle('open'); }
+document.querySelectorAll('.nav-links a').forEach(a => {
+  a.addEventListener('click', () => document.getElementById('navLinks').classList.remove('open'));
+});
+
+// ── Scroll reveal ─────────────────────────────────────────────────────────
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.1, rootMargin: '0px 0px -60px 0px' });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+
+
+// Theme-aware particle/shape recolour
+var PARTICLE_COLORS={p1:[0,0.83,1],p2:[0.6,0.33,0.93],shape:0x00d4ff,shapeOp:0.12,particleOp:0.6};
+  var pal=PARTICLE_COLORS;
+  var col=pGeo.attributes.color.array;
+  for(var i=0;i<particleCount;i++){var c=tVals[i]<0.5?pal.p1:pal.p2;col[i*3]=c[0];col[i*3+1]=c[1];col[i*3+2]=c[2];}
+  pGeo.attributes.color.needsUpdate=true;
+  shapes.forEach(function(s){s.material.color.setHex(pal.shape);s.material.opacity=pal.shapeOp;});
+}
+
+</script>
+</body>
+</html>

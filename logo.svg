@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <!-- Red background -->
+  <rect width="200" height="200" fill="#FF1A1A" rx="0"/>
+  <!-- Gray bar -->
+  <rect x="28" y="46" width="130" height="14" fill="#7a7a7a" rx="2"/>
+  <!-- R letter -->
+  <text x="24" y="160" font-family="'Arial Black','Impact',sans-serif" font-weight="900" font-size="108" fill="#FFFFFF" letter-spacing="-4">RF</text>
+</svg>
