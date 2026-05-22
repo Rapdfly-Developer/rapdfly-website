@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<link rel="icon" type="image/png" href="rf-favicon.png">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Let's Collaborate — Rapdfly</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -12,8 +13,8 @@ body{background:var(--bg-primary);color:var(--text-primary);font-family:var(--fo
 #bg-canvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;}
 nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:20px 60px;display:flex;align-items:center;justify-content:space-between;background:rgba(2,4,8,0.6);backdrop-filter:blur(20px);border-bottom:1px solid var(--glass-border);transition:.4s;}
 nav.scrolled{padding:14px 60px;background:rgba(2,4,8,0.9);}
-.nav-logo{font-size:1.8rem;font-weight:800;background:linear-gradient(135deg,var(--accent-blue),var(--accent-violet));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none;}
-.nav-logo span{-webkit-text-fill-color:var(--accent-cyan);}
+.nav-logo { font-size: 1.8rem; font-weight: 800; letter-spacing: -0.02em; color: #FF1A1A; -webkit-text-fill-color: #FF1A1A; background: none; text-decoration: none; }
+.nav-logo span { color: #FF1A1A; -webkit-text-fill-color: #FF1A1A; }
 .nav-links{display:flex;gap:40px;list-style:none;}
 .nav-links a{color:var(--text-secondary);text-decoration:none;font-size:.9rem;font-weight:500;letter-spacing:.05em;text-transform:uppercase;transition:color .3s;position:relative;}
 .nav-links a::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:1px;background:var(--accent-blue);transition:width .3s;}
@@ -94,7 +95,7 @@ section.cs.alt{background:var(--bg-secondary);}
 .engage-title{font-size:1.2rem;font-weight:800;color:var(--text-primary);margin-bottom:12px;}
 .engage-desc{font-size:.9rem;color:var(--text-secondary);line-height:1.75;margin-bottom:20px;}
 .engage-ideal{font-size:.78rem;color:var(--text-muted);display:flex;align-items:flex-start;gap:8px;}
-.engage-ideal::before{content:'✓';color:var(--accent-green);flex-shrink:0;}
+.engage-ideal::before{content:'';color:var(--accent-green);flex-shrink:0;}
 
 footer{position:relative;z-index:1;background:var(--bg-primary);border-top:1px solid var(--glass-border);padding:60px 60px 40px;}
 .footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:60px;max-width:1200px;margin:0 auto 60px;}
@@ -110,7 +111,6 @@ footer{position:relative;z-index:1;background:var(--bg-primary);border-top:1px s
 
 .reveal{opacity:0;transform:translateY(30px);transition:opacity .7s ease,transform .7s ease;}
 .reveal.visible{opacity:1;transform:translateY(0);}
-.rd1{transition-delay:.1s;}.rd2{transition-delay:.2s;}.rd3{transition-delay:.3s;}
 
 @media(max-width:1024px){.collab-grid{grid-template-columns:1fr;gap:40px;}.engage-grid{grid-template-columns:1fr;}.process-steps{grid-template-columns:repeat(2,1fr);gap:32px;}.process-steps::before{display:none;}.footer-grid{grid-template-columns:1fr 1fr;gap:40px;}}
 @media(max-width:768px){
@@ -129,6 +129,86 @@ footer{position:relative;z-index:1;background:var(--bg-primary);border-top:1px s
 .logo-img{height:34px;width:34px;border-radius:6px;margin-right:10px;vertical-align:middle;flex-shrink:0;display:inline-block;}
 /* ── Theme toggle ── */
 /* ══ LIGHT MODE — full contrast system ══ */
+
+/* ── Brand name red ── */
+.nav-logo {
+  color: #FF1A1A;
+  -webkit-text-fill-color: #FF1A1A;
+  background: none;
+}
+.nav-logo span {
+  color: #FF1A1A;
+  -webkit-text-fill-color: #FF1A1A;
+}
+.brand-name {
+  color: #FF1A1A !important;
+  -webkit-text-fill-color: #FF1A1A !important;
+  background: none !important;
+  background-image: none !important;
+}
+.footer-copy .brand-name {
+  color: #FF1A1A;
+}
+
+
+/* ═══════════════════════════════════════════════
+   MOTION UPGRADE — spring easing, blur reveal,
+   cursor glow, magnetic buttons, a11y
+   ═══════════════════════════════════════════════ */
+
+/* Spring easing vars */
+:root{--spring:cubic-bezier(0.16,1,0.3,1);--spring-fast:cubic-bezier(0.34,1.56,0.64,1);}
+
+/* ── Cursor glow ── */
+#cursor-glow{position:fixed;pointer-events:none;z-index:9999;width:380px;height:380px;border-radius:50%;background:radial-gradient(circle,rgba(0,212,255,0.055) 0%,transparent 70%);transform:translate(-50%,-50%);mix-blend-mode:screen;}
+
+/* ── Ambient orbs ── */
+.orb{position:fixed;border-radius:50%;pointer-events:none;z-index:0;filter:blur(70px);animation:orb-drift linear infinite;mix-blend-mode:screen;}
+@keyframes orb-drift{0%{transform:translate(0,0) scale(1);}33%{transform:translate(36px,-52px) scale(1.08);}66%{transform:translate(-28px,38px) scale(0.93);}100%{transform:translate(0,0) scale(1);}}
+
+/* ── Improved reveal (blur + spring) ── */
+.reveal{opacity:0;transform:translateY(30px);filter:blur(5px);transition:opacity 0.6s var(--spring),transform 0.6s var(--spring),filter 0.6s var(--spring);will-change:transform,opacity;}
+.reveal.visible{opacity:1;transform:translateY(0);filter:blur(0px);}
+.reveal-left{opacity:0;transform:translateX(-30px);filter:blur(5px);transition:opacity 0.6s var(--spring),transform 0.6s var(--spring),filter 0.6s var(--spring);}
+.reveal-right{opacity:0;transform:translateX(30px);filter:blur(5px);transition:opacity 0.6s var(--spring),transform 0.6s var(--spring),filter 0.6s var(--spring);}
+.reveal-scale{opacity:0;transform:scale(0.9);filter:blur(6px);transition:opacity 0.6s var(--spring),transform 0.6s var(--spring),filter 0.6s var(--spring);}
+.reveal-left.visible,.reveal-right.visible{opacity:1;transform:translateX(0);filter:blur(0px);}
+.reveal-scale.visible{opacity:1;transform:scale(1);filter:blur(0px);}
+.rd1{transition-delay:0.08s;}.rd2{transition-delay:0.16s;}.rd3{transition-delay:0.24s;}.rd4{transition-delay:0.32s;}.rd5{transition-delay:0.40s;}.rd6{transition-delay:0.48s;}
+
+/* ── Button improved ── */
+.btn-primary,.apply-btn,.open-app-btn{transition:transform 0.35s var(--spring),box-shadow 0.35s var(--spring)!important;}
+.btn-primary:hover,.apply-btn:hover,.open-app-btn:hover{transform:translateY(-3px) scale(1.04)!important;}
+.btn-primary:active,.apply-btn:active{transform:scale(0.97)!important;}
+.btn-secondary{transition:border-color 0.3s,color 0.3s,box-shadow 0.35s var(--spring),transform 0.35s var(--spring)!important;}
+.btn-secondary:hover{transform:translateY(-2px)!important;}
+
+/* ── Card hover ── */
+.job-card,.why-card,.engage-card,.cc-card,.svc-card,.project-card,.val-card,.timeline-item{
+  transition:border-color 0.3s,transform 0.45s var(--spring),box-shadow 0.45s var(--spring)!important;}
+.job-card:hover,.why-card:hover,.engage-card:hover{transform:translateY(-8px) scale(1.01)!important;box-shadow:0 24px 60px rgba(0,212,255,0.12),0 0 0 1px rgba(0,212,255,0.08)!important;}
+
+/* ── Section title gradient shimmer ── */
+@keyframes shimmer-sweep{0%{background-position:-200% center;}100%{background-position:200% center;}}
+.sec-title.visible span,.section-title.visible span,.page-hero-title span{background-size:200% auto;animation:shimmer-sweep 3.5s linear infinite;}
+
+/* ── Scroll-driven parallax (progressive enhancement) ── */
+@supports (animation-timeline: scroll()){
+  .page-hero{animation:hero-parallax linear both;animation-timeline:scroll();animation-range:0px 400px;}
+  @keyframes hero-parallax{to{transform:translateY(60px);opacity:0.6;}}
+}
+
+/* ── Nav link underline spring ── */
+.nav-links a::after{transition:width 0.35s var(--spring)!important;}
+
+/* ── prefers-reduced-motion ── */
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:0.01ms!important;animation-iteration-count:1!important;transition-duration:0.01ms!important;}
+  .reveal,.reveal-left,.reveal-right,.reveal-scale{opacity:1;transform:none;filter:none;transition:none!important;}
+  #cursor-glow,.orb{display:none;}
+  .partners-track{animation:none;}
+}
+
 </style>
 </head>
 <body>
@@ -141,6 +221,7 @@ footer{position:relative;z-index:1;background:var(--bg-primary);border-top:1px s
     <li><a href="services.html">Services</a></li>
     <li><a href="projects.html">Projects</a></li>
     <li><a href="team.html">Team</a></li>
+    <li><a href="careers.html">Careers</a></li>
     <li><a href="collaborate.html" class="nav-cta active">Let's Collaborate</a></li>
   </ul>
   <div class="hamburger" id="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></div>
@@ -167,28 +248,24 @@ footer{position:relative;z-index:1;background:var(--bg-primary);border-top:1px s
         <p class="contact-intro reveal rd2">Whether you're looking to transform your technology stack, build a digital product, or need a strategic partner to help scale your operations — let's start with a conversation. No hard sell, just real talk about your goals.</p>
         <div class="contact-cards reveal rd3">
           <div class="contact-card">
-            <div class="cc-icon">📞</div>
             <div>
               <div class="cc-label">Phone</div>
-              <div class="cc-value">+91 96886 85240</div>
+              <div class="cc-value">+91 9629051083</div>
             </div>
           </div>
           <div class="contact-card">
-            <div class="cc-icon">✉️</div>
             <div>
               <div class="cc-label">Email</div>
-              <div class="cc-value">venkat@rapdfly.com</div>
+              <div class="cc-value">gowtham@rapdfly.com</div>
             </div>
           </div>
           <div class="contact-card">
-            <div class="cc-icon">📍</div>
             <div>
               <div class="cc-label">Office</div>
               <div class="cc-value">No. 29/A (E), 27th Main Road, 7th Cross,<br>1st Sector, HSR Layout, Bangalore — 560102</div>
             </div>
           </div>
           <div class="contact-card">
-            <div class="cc-icon">🕐</div>
             <div>
               <div class="cc-label">Office Hours</div>
               <div class="cc-value">Mon – Sat, 9:00 AM – 6:30 PM IST</div>
@@ -196,9 +273,9 @@ footer{position:relative;z-index:1;background:var(--bg-primary);border-top:1px s
           </div>
         </div>
         <div class="social-row reveal">
-          <a href="#" class="soc-link">📘 Facebook</a>
-          <a href="#" class="soc-link">📸 Instagram</a>
-          <a href="#" class="soc-link">💼 LinkedIn</a>
+          <a href="#" class="soc-link">Facebook</a>
+          <a href="#" class="soc-link">Instagram</a>
+          <a href="#" class="soc-link">LinkedIn</a>
         </div>
       </div>
 
@@ -286,22 +363,22 @@ footer{position:relative;z-index:1;background:var(--bg-primary);border-top:1px s
     </div>
     <div class="process-steps">
       <div class="step reveal rd1">
-        <div class="step-circle">🔍<div class="step-num">01</div></div>
+        <div class="step-circle"><div class="step-num">01</div></div>
         <div class="step-title">Discovery</div>
         <p class="step-desc">We begin with a deep-dive into your requirements and scope — understanding your business, your goals, and presenting the solution options best aligned to your needs.</p>
       </div>
       <div class="step reveal rd2">
-        <div class="step-circle">📋<div class="step-num">02</div></div>
+        <div class="step-circle"><div class="step-num">02</div></div>
         <div class="step-title">Proposal</div>
         <p class="step-desc">Technology selection, timeline, budget, and team composition are defined and documented. Full transparency — no surprises, no hidden costs.</p>
       </div>
       <div class="step reveal rd3">
-        <div class="step-circle">👥<div class="step-num">03</div></div>
+        <div class="step-circle"><div class="step-num">03</div></div>
         <div class="step-title">Resourcing</div>
         <p class="step-desc">The agreed team is assembled based on the exact skillsets required and member availability — the right people matched to your exact challenge.</p>
       </div>
       <div class="step reveal" style="transition-delay:.4s;">
-        <div class="step-circle">🚀<div class="step-num">04</div></div>
+        <div class="step-circle"><div class="step-num">04</div></div>
         <div class="step-title">Engagement</div>
         <p class="step-desc">Regular update meetings and milestone reviews throughout delivery, with a formal project handoff and knowledge transfer at successful completion.</p>
       </div>
@@ -319,25 +396,21 @@ footer{position:relative;z-index:1;background:var(--bg-primary);border-top:1px s
     </div>
     <div class="engage-grid">
       <div class="engage-card reveal rd1" style="--et:linear-gradient(90deg,#00d4ff,#7c3aed);">
-        <span class="engage-icon">⚡</span>
         <div class="engage-title">On Demand Team</div>
         <p class="engage-desc">Temporary consultants and technical specialists handle defined-scope projects with clear timelines and outcomes. Scale up quickly when you need extra capacity, then scale back when the work is done.</p>
         <p class="engage-ideal">Best for: one-time initiatives, peak capacity needs, exploratory projects.</p>
       </div>
       <div class="engage-card reveal rd2" style="--et:linear-gradient(90deg,#a855f7,#00d4ff);">
-        <span class="engage-icon">🏢</span>
         <div class="engage-title">Dedicated Team</div>
         <p class="engage-desc">A persistent Rapdfly team that replaces the overhead of internal hiring for ongoing BAU work. Long-term, deeply embedded, and fully aligned with your operations, culture, and product vision.</p>
         <p class="engage-ideal">Best for: long-term product development, ongoing support, team extension.</p>
       </div>
       <div class="engage-card reveal rd3" style="--et:linear-gradient(90deg,#00ff88,#00d4ff);">
-        <span class="engage-icon">🔀</span>
         <div class="engage-title">Hybrid Model</div>
         <p class="engage-desc">Selected team members work on-site for deep process immersion and stakeholder alignment while others support remotely — the perfect blend of embedded focus and distributed flexibility.</p>
         <p class="engage-ideal">Best for: complex transformations, regulated industries, critical integrations.</p>
       </div>
       <div class="engage-card reveal" style="transition-delay:.4s;--et:linear-gradient(90deg,#f59e0b,#a855f7);">
-        <span class="engage-icon">🧠</span>
         <div class="engage-title">Consulting</div>
         <p class="engage-desc">Industry experts develop strategies, frameworks, and roadmaps addressing your most complex business challenges. Pure advisory — no implementation dependency. Ideal for leadership teams at strategic crossroads.</p>
         <p class="engage-ideal">Best for: digital transformation planning, technology selection, strategic audits.</p>
@@ -353,28 +426,51 @@ footer{position:relative;z-index:1;background:var(--bg-primary);border-top:1px s
       <p class="footer-desc">Value Adding Service Provider. Established in 2020, Rapdfly delivers enterprise IT solutions that put you first.</p>
     </div>
     <div><div class="footer-heading">Services</div><ul class="footer-links"><li><a href="services.html">Consulting</a></li><li><a href="services.html">Technology</a></li><li><a href="services.html">Enterprise IT</a></li></ul></div>
-    <div><div class="footer-heading">Company</div><ul class="footer-links"><li><a href="about.html">About Us</a></li><li><a href="projects.html">Projects</a></li><li><a href="team.html">Team</a></li></ul></div>
-    <div><div class="footer-heading">Contact</div><ul class="footer-links"><li><a href="tel:+919688685240">+91 96886 85240</a></li><li><a href="mailto:venkat@rapdfly.com">venkat@rapdfly.com</a></li><li><a href="#">Bangalore, Karnataka</a></li></ul></div>
+    <div><div class="footer-heading">Company</div><ul class="footer-links"><li><a href="about.html">About Us</a></li><li><a href="projects.html">Projects</a></li><li><a href="team.html">Team</a></li><li><a href="careers.html">Careers</a></li></ul></div>
+    <div><div class="footer-heading">Contact</div><ul class="footer-links"><li><a href="tel:+919629051083">+91 9629051083</a></li><li><a href="mailto:gowtham@rapdfly.com">gowtham@rapdfly.com</a></li><li><a href="#">Bangalore, Karnataka</a></li></ul></div>
   </div>
   <div class="footer-bottom">
-    <div class="footer-copy">© 2024 <span>Rapdfly</span>. All rights reserved.</div>
+    <div class="footer-copy">© 2024 <span class="brand-name">Rapdfly</span>. All rights reserved.</div>
     <div style="font-size:.8rem;color:var(--text-muted);">Est. 2020 · Bangalore, India</div>
   </div>
 </footer>
 
 <script>
-(function(){const canvas=document.getElementById('bg-canvas');const renderer=new THREE.WebGLRenderer({canvas,antialias:true,alpha:true});renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));renderer.setSize(window.innerWidth,window.innerHeight);const scene=new THREE.Scene();const camera=new THREE.PerspectiveCamera(60,window.innerWidth/window.innerHeight,0.1,1000);camera.position.z=50;const count=500;const pos=new Float32Array(count*3);const col=new Float32Array(count*3);for(let i=0;i<count;i++){pos[i*3]=(Math.random()-.5)*200;pos[i*3+1]=(Math.random()-.5)*200;pos[i*3+2]=(Math.random()-.5)*200;const t=Math.random();col[i*3]=t<.5?0:.6;col[i*3+1]=t<.5?.83:.33;col[i*3+2]=1;}const geo=new THREE.BufferGeometry();geo.setAttribute('position',new THREE.BufferAttribute(pos,3));geo.setAttribute('color',new THREE.BufferAttribute(col,3));scene.add(new THREE.Points(geo,new THREE.PointsMaterial({size:.35,vertexColors:true,transparent:true,opacity:.4})));(function animate(){requestAnimationFrame(animate);renderer.render(scene,camera);})();window.addEventListener('resize',()=>{camera.aspect=window.innerWidth/window.innerHeight;camera.updateProjectionMatrix();renderer.setSize(window.innerWidth,window.innerHeight);});})();
+(function(){
+  const canvas = document.getElementById('bg-canvas');
+  const renderer = new THREE.WebGLRenderer({canvas, antialias:true, alpha:true});
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(60, window.innerWidth/window.innerHeight, 0.1, 1000);
+  camera.position.z = 50;
+  const count = 500;
+  const pos = new Float32Array(count*3);
+  const col = new Float32Array(count*3);
+  for(let i=0;i<count;i++){
+    pos[i*3]=(Math.random()-.5)*200; pos[i*3+1]=(Math.random()-.5)*200; pos[i*3+2]=(Math.random()-.5)*200;
+    const t=Math.random(); col[i*3]=t<.5?0:.6; col[i*3+1]=t<.5?.83:.33; col[i*3+2]=1;
+  }
+  const geo=new THREE.BufferGeometry();
+  geo.setAttribute('position',new THREE.BufferAttribute(pos,3));
+  geo.setAttribute('color',new THREE.BufferAttribute(col,3));
+  scene.add(new THREE.Points(geo,new THREE.PointsMaterial({size:.35,vertexColors:true,transparent:true,opacity:.4})));
+  (function animate(){ requestAnimationFrame(animate); renderer.render(scene,camera); })();
+  window.addEventListener('resize',()=>{
+    camera.aspect=window.innerWidth/window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth,window.innerHeight);
+  });
+})();
 window.addEventListener('scroll',()=>document.getElementById('navbar').classList.toggle('scrolled',window.scrollY>60));
 function toggleMenu(){document.getElementById('navLinks').classList.toggle('open');}
 document.querySelectorAll('.nav-links a').forEach(a=>a.addEventListener('click',()=>document.getElementById('navLinks').classList.remove('open')));
-const obs=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');}),{threshold:.1,rootMargin:'0px 0px -60px 0px'});
-document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
 function handleSubmit(e){
   e.preventDefault();
   const btn=document.getElementById('submitBtn');
   btn.textContent='Sending...';btn.disabled=true;
   setTimeout(()=>{
-    btn.textContent='✓ Message Sent! We\'ll be in touch soon.';
+    btn.textContent=' Message Sent! We\'ll be in touch soon.';
     btn.style.background='linear-gradient(135deg,#00ff88,#00d4ff)';
     btn.style.color='#000';
     setTimeout(()=>{btn.textContent='Send Message →';btn.style.background='';btn.style.color='';btn.disabled=false;e.target.reset();},4000);
@@ -384,13 +480,48 @@ function handleSubmit(e){
 
 
 // Theme-aware particle/shape recolour
-var PARTICLE_COLORS={p1:[0,0.83,1],p2:[0.6,0.33,0.93],shape:0x00d4ff,shapeOp:0.12,particleOp:0.6};
-  var pal=PARTICLE_COLORS;
-  var col=pGeo.attributes.color.array;
-  for(var i=0;i<particleCount;i++){var c=tVals[i]<0.5?pal.p1:pal.p2;col[i*3]=c[0];col[i*3+1]=c[1];col[i*3+2]=c[2];}
-  pGeo.attributes.color.needsUpdate=true;
-  shapes.forEach(function(s){s.material.color.setHex(pal.shape);s.material.opacity=pal.shapeOp;});
-}
+
+
+
+// ── Motion Upgrade: reveal variants + cursor glow + magnetic buttons ──────
+
+// Reveal all variants — threshold:0, no rootMargin exclusion, hard fallback
+(function(){
+  var els = document.querySelectorAll('.reveal,.reveal-left,.reveal-right,.reveal-scale');
+  function show(el){ el.classList.add('visible'); }
+  if('IntersectionObserver' in window){
+    var obs = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){ if(e.isIntersecting){ show(e.target); obs.unobserve(e.target); } });
+    },{threshold:0, rootMargin:'0px'});
+    els.forEach(function(el){ obs.observe(el); });
+  } else {
+    els.forEach(show);
+  }
+  setTimeout(function(){ els.forEach(show); }, 800);
+})();
+
+// Cursor glow (smooth lag)
+(function(){
+  const glow=document.getElementById('cursor-glow');
+  if(!glow||window.matchMedia('(prefers-reduced-motion:reduce)').matches)return;
+  let mx=-600,my=-600,cx=-600,cy=-600;
+  document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;});
+  document.addEventListener('mouseleave',()=>{mx=-600;my=-600;});
+  (function tick(){cx+=(mx-cx)*0.08;cy+=(my-cy)*0.08;glow.style.left=cx+'px';glow.style.top=cy+'px';requestAnimationFrame(tick);})();
+})();
+
+// Magnetic buttons
+(function(){
+  if(window.matchMedia('(prefers-reduced-motion:reduce)').matches)return;
+  document.querySelectorAll('.btn-primary,.btn-secondary,.apply-btn,.nav-cta,.open-app-btn').forEach(btn=>{
+    btn.addEventListener('mousemove',e=>{
+      const r=btn.getBoundingClientRect();
+      const dx=e.clientX-(r.left+r.width/2),dy=e.clientY-(r.top+r.height/2);
+      btn.style.transform=`translate(${dx*0.16}px,${dy*0.16}px) scale(1.04)`;
+    });
+    btn.addEventListener('mouseleave',()=>{btn.style.transform='';});
+  });
+})();
 
 </script>
 </body>

@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<link rel="icon" type="image/png" href="rf-favicon.png">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>About Us — Rapdfly</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -59,17 +60,8 @@ nav {
   transition: var(--transition);
 }
 nav.scrolled { padding: 14px 60px; background: rgba(2, 4, 8, 0.9); }
-.nav-logo {
-  font-size: 1.8rem;
-  font-weight: 800;
-  letter-spacing: -0.02em;
-  background: linear-gradient(135deg, var(--accent-blue), var(--accent-violet));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  text-decoration: none;
-}
-.nav-logo span { -webkit-text-fill-color: var(--accent-cyan); }
+.nav-logo { font-size: 1.8rem; font-weight: 800; letter-spacing: -0.02em; color: #FF1A1A; -webkit-text-fill-color: #FF1A1A; background: none; text-decoration: none; }
+.nav-logo span { color: #FF1A1A; -webkit-text-fill-color: #FF1A1A; }
 .nav-links { display: flex; gap: 40px; list-style: none; }
 .nav-links a {
   color: var(--text-secondary);
@@ -253,7 +245,7 @@ section.content-section.alt { background: var(--bg-secondary); }
 .box-face.right  { transform: rotateY(90deg) translateZ(130px); }
 .box-face.top    { transform: rotateX(90deg) translateZ(130px); }
 .box-face.bottom { transform: rotateX(-90deg) translateZ(130px); }
-.orb {
+.story-orb {
   position: absolute;
   border-radius: 50%;
   filter: blur(50px);
@@ -534,12 +526,6 @@ footer {
 .footer-copy { font-size: 0.85rem; color: var(--text-muted); }
 .footer-copy span { color: var(--accent-blue); }
 
-/* ── Reveal ── */
-.reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
-.reveal.visible { opacity: 1; transform: translateY(0); }
-.reveal-delay-1 { transition-delay: 0.1s; }
-.reveal-delay-2 { transition-delay: 0.2s; }
-.reveal-delay-3 { transition-delay: 0.3s; }
 
 /* ── Responsive ── */
 @media (max-width: 1024px) {
@@ -577,6 +563,86 @@ footer {
 .logo-img{height:34px;width:34px;border-radius:6px;margin-right:10px;vertical-align:middle;flex-shrink:0;display:inline-block;}
 /* ── Theme toggle ── */
 /* ══ LIGHT MODE — full contrast system ══ */
+
+/* ── Brand name red ── */
+.nav-logo {
+  color: #FF1A1A;
+  -webkit-text-fill-color: #FF1A1A;
+  background: none;
+}
+.nav-logo span {
+  color: #FF1A1A;
+  -webkit-text-fill-color: #FF1A1A;
+}
+.brand-name {
+  color: #FF1A1A !important;
+  -webkit-text-fill-color: #FF1A1A !important;
+  background: none !important;
+  background-image: none !important;
+}
+.footer-copy .brand-name {
+  color: #FF1A1A;
+}
+
+
+/* ═══════════════════════════════════════════════
+   MOTION UPGRADE — spring easing, blur reveal,
+   cursor glow, magnetic buttons, a11y
+   ═══════════════════════════════════════════════ */
+
+/* Spring easing vars */
+:root{--spring:cubic-bezier(0.16,1,0.3,1);--spring-fast:cubic-bezier(0.34,1.56,0.64,1);}
+
+/* ── Cursor glow ── */
+#cursor-glow{position:fixed;pointer-events:none;z-index:9999;width:380px;height:380px;border-radius:50%;background:radial-gradient(circle,rgba(0,212,255,0.055) 0%,transparent 70%);transform:translate(-50%,-50%);mix-blend-mode:screen;}
+
+/* ── Ambient orbs ── */
+.orb{position:fixed;border-radius:50%;pointer-events:none;z-index:0;filter:blur(70px);animation:orb-drift linear infinite;mix-blend-mode:screen;}
+@keyframes orb-drift{0%{transform:translate(0,0) scale(1);}33%{transform:translate(36px,-52px) scale(1.08);}66%{transform:translate(-28px,38px) scale(0.93);}100%{transform:translate(0,0) scale(1);}}
+
+/* ── Improved reveal (blur + spring) ── */
+.reveal{opacity:0;transform:translateY(30px);filter:blur(5px);transition:opacity 0.6s var(--spring),transform 0.6s var(--spring),filter 0.6s var(--spring);will-change:transform,opacity;}
+.reveal.visible{opacity:1;transform:translateY(0);filter:blur(0px);}
+.reveal-left{opacity:0;transform:translateX(-30px);filter:blur(5px);transition:opacity 0.6s var(--spring),transform 0.6s var(--spring),filter 0.6s var(--spring);}
+.reveal-right{opacity:0;transform:translateX(30px);filter:blur(5px);transition:opacity 0.6s var(--spring),transform 0.6s var(--spring),filter 0.6s var(--spring);}
+.reveal-scale{opacity:0;transform:scale(0.9);filter:blur(6px);transition:opacity 0.6s var(--spring),transform 0.6s var(--spring),filter 0.6s var(--spring);}
+.reveal-left.visible,.reveal-right.visible{opacity:1;transform:translateX(0);filter:blur(0px);}
+.reveal-scale.visible{opacity:1;transform:scale(1);filter:blur(0px);}
+.rd1{transition-delay:0.08s;}.rd2{transition-delay:0.16s;}.rd3{transition-delay:0.24s;}.rd4{transition-delay:0.32s;}.rd5{transition-delay:0.40s;}.rd6{transition-delay:0.48s;}
+
+/* ── Button improved ── */
+.btn-primary,.apply-btn,.open-app-btn{transition:transform 0.35s var(--spring),box-shadow 0.35s var(--spring)!important;}
+.btn-primary:hover,.apply-btn:hover,.open-app-btn:hover{transform:translateY(-3px) scale(1.04)!important;}
+.btn-primary:active,.apply-btn:active{transform:scale(0.97)!important;}
+.btn-secondary{transition:border-color 0.3s,color 0.3s,box-shadow 0.35s var(--spring),transform 0.35s var(--spring)!important;}
+.btn-secondary:hover{transform:translateY(-2px)!important;}
+
+/* ── Card hover ── */
+.job-card,.why-card,.engage-card,.cc-card,.svc-card,.project-card,.val-card,.timeline-item{
+  transition:border-color 0.3s,transform 0.45s var(--spring),box-shadow 0.45s var(--spring)!important;}
+.job-card:hover,.why-card:hover,.engage-card:hover{transform:translateY(-8px) scale(1.01)!important;box-shadow:0 24px 60px rgba(0,212,255,0.12),0 0 0 1px rgba(0,212,255,0.08)!important;}
+
+/* ── Section title gradient shimmer ── */
+@keyframes shimmer-sweep{0%{background-position:-200% center;}100%{background-position:200% center;}}
+.sec-title.visible span,.section-title.visible span,.page-hero-title span{background-size:200% auto;animation:shimmer-sweep 3.5s linear infinite;}
+
+/* ── Scroll-driven parallax (progressive enhancement) ── */
+@supports (animation-timeline: scroll()){
+  .page-hero{animation:hero-parallax linear both;animation-timeline:scroll();animation-range:0px 400px;}
+  @keyframes hero-parallax{to{transform:translateY(60px);opacity:0.6;}}
+}
+
+/* ── Nav link underline spring ── */
+.nav-links a::after{transition:width 0.35s var(--spring)!important;}
+
+/* ── prefers-reduced-motion ── */
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:0.01ms!important;animation-iteration-count:1!important;transition-duration:0.01ms!important;}
+  .reveal,.reveal-left,.reveal-right,.reveal-scale{opacity:1;transform:none;filter:none;transition:none!important;}
+  #cursor-glow,.orb{display:none;}
+  .partners-track{animation:none;}
+}
+
 </style>
 </head>
 <body>
@@ -590,8 +656,9 @@ footer {
     <li><a href="about.html" class="active">About Us</a></li>
     <li><a href="index.html#services">Services</a></li>
     <li><a href="index.html#projects">Projects</a></li>
-    <li><a href="index.html#team">Team</a></li>
-    <li><a href="index.html#contact" class="nav-cta">Let's Collaborate</a></li>
+    <li><a href="team.html">Team</a></li>
+    <li><a href="careers.html">Careers</a></li>
+    <li><a href="collaborate.html" class="nav-cta">Let's Collaborate</a></li>
   </ul>
   <div class="hamburger" id="hamburger" onclick="toggleMenu()">
     <span></span><span></span><span></span>
@@ -626,7 +693,7 @@ footer {
         <div class="section-label reveal">Our Story</div>
         <h2 class="section-title reveal reveal-delay-1">From a bold idea<br>to a <span>thriving force</span></h2>
         <p class="reveal reveal-delay-2">
-          Rapdfly was founded in July 2020 with a clear and ambitious vision — to become the most
+          Rapdfly was founded in 2018 with a clear and ambitious vision — to become the most
           reliable value-adding partner for businesses navigating a rapidly evolving digital landscape.
           What began as a consulting play in e-commerce and technology implementations quickly grew
           into something far bigger.
@@ -643,8 +710,8 @@ footer {
         </p>
       </div>
       <div class="story-visual">
-        <div class="orb orb-a"></div>
-        <div class="orb orb-b"></div>
+        <div class="story-orb orb-a"></div>
+        <div class="story-orb orb-b"></div>
         <div class="story-3d-box" style="transform-style:preserve-3d;">
           <div class="box-face front"></div>
           <div class="box-face back"></div>
@@ -664,7 +731,6 @@ footer {
     <div class="section-label reveal" style="justify-content:center; margin-bottom:48px;">Purpose & Direction</div>
     <div class="mv-grid">
       <div class="mv-card mission reveal reveal-delay-1">
-        <span class="mv-icon">🎯</span>
         <div class="mv-title">Our Mission</div>
         <p class="mv-desc">
           To add sustained, measurable value to every customer we serve — through innovative
@@ -674,7 +740,6 @@ footer {
         </p>
       </div>
       <div class="mv-card vision reveal reveal-delay-2">
-        <span class="mv-icon">🔭</span>
         <div class="mv-title">Our Vision</div>
         <p class="mv-desc">
           To be the most trusted technology partner for businesses across industries — building
@@ -695,22 +760,18 @@ footer {
     </div>
     <div class="values-grid">
       <div class="value-card reveal reveal-delay-1">
-        <span class="value-icon">⚡</span>
         <div class="value-name">Accelerate Technology</div>
         <p class="value-desc">We embrace and deploy cutting-edge tools at the speed your business demands — never falling behind the curve of innovation.</p>
       </div>
       <div class="value-card reveal reveal-delay-2">
-        <span class="value-icon">🤝</span>
         <div class="value-name">Collaborate for Better</div>
         <p class="value-desc">True partnerships, not transactions. Your goals become our mission and your wins become our measure of success.</p>
       </div>
       <div class="value-card reveal reveal-delay-3">
-        <span class="value-icon">🚀</span>
         <div class="value-name">Empower Businesses</div>
         <p class="value-desc">We hand you the tools, strategy, and support to unlock your full potential — then step back and watch you soar.</p>
       </div>
       <div class="value-card reveal" style="transition-delay:0.4s;">
-        <span class="value-icon">🌿</span>
         <div class="value-name">Sustainability at Core</div>
         <p class="value-desc">We build for the long run — solutions that are responsible, resilient, and designed to serve people, planet, and profit equally.</p>
       </div>
@@ -770,7 +831,7 @@ footer {
     </div>
     <div class="timeline reveal reveal-delay-2">
       <div class="timeline-item">
-        <div class="timeline-year">July 2020</div>
+        <div class="timeline-year">2018</div>
         <div class="timeline-event">Rapdfly Founded</div>
         <p class="timeline-detail">Launched with a focus on e-commerce consulting and technology implementation services.</p>
       </div>
@@ -844,7 +905,7 @@ footer {
   <div class="footer-grid">
     <div class="footer-brand">
       <a href="index.html" class="nav-logo"><img src="logo.svg" alt="Rapdfly Logo" class="logo-img">Rapd<span>fly</span></a>
-      <p class="footer-desc">Value Adding Service Provider. Established in 2020, Rapdfly delivers enterprise IT solutions that put you first and support growth at every step.</p>
+      <p class="footer-desc">Value Adding Service Provider. Established in 2018, Rapdfly delivers enterprise IT solutions that put you first and support growth at every step.</p>
     </div>
     <div>
       <div class="footer-heading">Services</div>
@@ -859,70 +920,66 @@ footer {
       <div class="footer-heading">Company</div>
       <ul class="footer-links">
         <li><a href="about.html">About Us</a></li>
-        <li><a href="index.html#projects">Projects</a></li>
-        <li><a href="index.html#team">Team</a></li>
-        <li><a href="index.html#contact">Contact</a></li>
+        <li><a href="projects.html">Projects</a></li>
+        <li><a href="team.html">Team</a></li>
+        <li><a href="careers.html">Careers</a></li>
+        <li><a href="collaborate.html">Collaborate</a></li>
       </ul>
     </div>
     <div>
       <div class="footer-heading">Contact</div>
       <ul class="footer-links">
-        <li><a href="tel:+919688685240">+91 96886 85240</a></li>
-        <li><a href="mailto:venkat@rapdfly.com">venkat@rapdfly.com</a></li>
+        <li><a href="tel:+919629051083">+91 9629051083</a></li>
+        <li><a href="mailto:gowtham@rapdfly.com">gowtham@rapdfly.com</a></li>
         <li><a href="#">HSR Layout, Bangalore</a></li>
         <li><a href="#">Karnataka — 560102</a></li>
       </ul>
     </div>
   </div>
   <div class="footer-bottom">
-    <div class="footer-copy">© 2024 <span>Rapdfly</span>. All rights reserved. Uniqueness Overloaded.</div>
-    <div style="font-size:0.8rem; color:var(--text-muted);">Est. 2020 · Bangalore, India</div>
+    <div class="footer-copy">© 2024 <span class="brand-name">Rapdfly</span>. All rights reserved. Uniqueness Overloaded.</div>
+    <div style="font-size:0.8rem; color:var(--text-muted);">Est. 2018 · Bangalore, India</div>
   </div>
 </footer>
 
 <script>
-// ── Three.js background ───────────────────────────────────────────────────
-(function() {
+(function(){
   const canvas = document.getElementById('bg-canvas');
-  const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+  const renderer = new THREE.WebGLRenderer({canvas, antialias:true, alpha:true});
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
   renderer.setSize(window.innerWidth, window.innerHeight);
   const scene = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+  const camera = new THREE.PerspectiveCamera(60, window.innerWidth/window.innerHeight, 0.1, 1000);
   camera.position.z = 50;
-
   const count = 600;
-  const pos = new Float32Array(count * 3);
-  const col = new Float32Array(count * 3);
-  for (let i = 0; i < count; i++) {
-    pos[i*3]   = (Math.random() - 0.5) * 200;
-    pos[i*3+1] = (Math.random() - 0.5) * 200;
-    pos[i*3+2] = (Math.random() - 0.5) * 200;
-    const t = Math.random();
-    col[i*3] = t < 0.5 ? 0 : 0.6; col[i*3+1] = t < 0.5 ? 0.83 : 0.33; col[i*3+2] = 1;
+  const pos = new Float32Array(count*3);
+  const col = new Float32Array(count*3);
+  for(let i=0;i<count;i++){
+    pos[i*3]=(Math.random()-.5)*200; pos[i*3+1]=(Math.random()-.5)*200; pos[i*3+2]=(Math.random()-.5)*200;
+    const t=Math.random(); col[i*3]=t<.5?0:.6; col[i*3+1]=t<.5?.83:.33; col[i*3+2]=1;
   }
-  const geo = new THREE.BufferGeometry();
-  geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
-  geo.setAttribute('color', new THREE.BufferAttribute(col, 3));
-  scene.add(new THREE.Points(geo, new THREE.PointsMaterial({ size: 0.35, vertexColors: true, transparent: true, opacity: 0.5 })));
-
-  let mx = 0, my = 0;
-  document.addEventListener('mousemove', e => { mx = (e.clientX/window.innerWidth-0.5)*2; my = (e.clientY/window.innerHeight-0.5)*2; });
-
-  let t = 0;
-  (function animate() {
+  const geo=new THREE.BufferGeometry();
+  geo.setAttribute('position',new THREE.BufferAttribute(pos,3));
+  geo.setAttribute('color',new THREE.BufferAttribute(col,3));
+  scene.add(new THREE.Points(geo,new THREE.PointsMaterial({size:.35,vertexColors:true,transparent:true,opacity:.5})));
+  let mx=0, my=0;
+  document.addEventListener('mousemove', e=>{
+    mx=(e.clientX/window.innerWidth-0.5)*2;
+    my=(e.clientY/window.innerHeight-0.5)*2;
+  });
+  let t=0;
+  (function animate(){
     requestAnimationFrame(animate);
-    t += 0.008;
-    camera.position.x += (mx * 6 - camera.position.x) * 0.04;
-    camera.position.y += (-my * 3 - camera.position.y) * 0.04;
+    t+=0.008;
+    camera.position.x+=(mx*6-camera.position.x)*0.04;
+    camera.position.y+=(-my*3-camera.position.y)*0.04;
     camera.lookAt(scene.position);
-    renderer.render(scene, camera);
+    renderer.render(scene,camera);
   })();
-
-  window.addEventListener('resize', () => {
-    camera.aspect = window.innerWidth / window.innerHeight;
+  window.addEventListener('resize',()=>{
+    camera.aspect=window.innerWidth/window.innerHeight;
     camera.updateProjectionMatrix();
-    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setSize(window.innerWidth,window.innerHeight);
   });
 })();
 
@@ -937,22 +994,52 @@ document.querySelectorAll('.nav-links a').forEach(a => {
   a.addEventListener('click', () => document.getElementById('navLinks').classList.remove('open'));
 });
 
-// ── Scroll reveal ─────────────────────────────────────────────────────────
-const observer = new IntersectionObserver(entries => {
-  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
-}, { threshold: 0.1, rootMargin: '0px 0px -60px 0px' });
-document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
 
 
 // Theme-aware particle/shape recolour
-var PARTICLE_COLORS={p1:[0,0.83,1],p2:[0.6,0.33,0.93],shape:0x00d4ff,shapeOp:0.12,particleOp:0.6};
-  var pal=PARTICLE_COLORS;
-  var col=pGeo.attributes.color.array;
-  for(var i=0;i<particleCount;i++){var c=tVals[i]<0.5?pal.p1:pal.p2;col[i*3]=c[0];col[i*3+1]=c[1];col[i*3+2]=c[2];}
-  pGeo.attributes.color.needsUpdate=true;
-  shapes.forEach(function(s){s.material.color.setHex(pal.shape);s.material.opacity=pal.shapeOp;});
-}
+
+
+
+// ── Motion Upgrade: reveal variants + cursor glow + magnetic buttons ──────
+
+// Reveal all variants — threshold:0, no rootMargin exclusion, hard fallback
+(function(){
+  var els = document.querySelectorAll('.reveal,.reveal-left,.reveal-right,.reveal-scale');
+  function show(el){ el.classList.add('visible'); }
+  if('IntersectionObserver' in window){
+    var obs = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){ if(e.isIntersecting){ show(e.target); obs.unobserve(e.target); } });
+    },{threshold:0, rootMargin:'0px'});
+    els.forEach(function(el){ obs.observe(el); });
+  } else {
+    els.forEach(show);
+  }
+  setTimeout(function(){ els.forEach(show); }, 800);
+})();
+
+// Cursor glow (smooth lag)
+(function(){
+  const glow=document.getElementById('cursor-glow');
+  if(!glow||window.matchMedia('(prefers-reduced-motion:reduce)').matches)return;
+  let mx=-600,my=-600,cx=-600,cy=-600;
+  document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;});
+  document.addEventListener('mouseleave',()=>{mx=-600;my=-600;});
+  (function tick(){cx+=(mx-cx)*0.08;cy+=(my-cy)*0.08;glow.style.left=cx+'px';glow.style.top=cy+'px';requestAnimationFrame(tick);})();
+})();
+
+// Magnetic buttons
+(function(){
+  if(window.matchMedia('(prefers-reduced-motion:reduce)').matches)return;
+  document.querySelectorAll('.btn-primary,.btn-secondary,.apply-btn,.nav-cta,.open-app-btn').forEach(btn=>{
+    btn.addEventListener('mousemove',e=>{
+      const r=btn.getBoundingClientRect();
+      const dx=e.clientX-(r.left+r.width/2),dy=e.clientY-(r.top+r.height/2);
+      btn.style.transform=`translate(${dx*0.16}px,${dy*0.16}px) scale(1.04)`;
+    });
+    btn.addEventListener('mouseleave',()=>{btn.style.transform='';});
+  });
+})();
 
 </script>
 </body>

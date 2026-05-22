@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<link rel="icon" type="image/png" href="rf-favicon.png">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Rapdfly — Enterprise IT Solutions</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -23,6 +24,9 @@
   --glass-border: rgba(0, 212, 255, 0.15);
   --font-main: 'Segoe UI', system-ui, -apple-system, sans-serif;
   --transition: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  --spring: cubic-bezier(0.16, 1, 0.3, 1);
+  --spring-fast: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 /* ── Base ── */
@@ -88,13 +92,8 @@ nav {
   transition: var(--transition);
 }
 nav.scrolled { padding: 14px 60px; background: rgba(2, 4, 8, 0.9); }
-.nav-logo {
-  font-size: 1.8rem; font-weight: 800; letter-spacing: -0.02em;
-  background: linear-gradient(135deg, var(--accent-blue), var(--accent-violet));
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-  text-decoration: none;
-}
-.nav-logo span { color: var(--accent-cyan); -webkit-text-fill-color: var(--accent-cyan); }
+.nav-logo { font-size: 1.8rem; font-weight: 800; letter-spacing: -0.02em; color: #FF1A1A; -webkit-text-fill-color: #FF1A1A; background: none; text-decoration: none; }
+.nav-logo span { color: #FF1A1A; -webkit-text-fill-color: #FF1A1A; }
 .nav-links { display: flex; gap: 40px; list-style: none; margin-left: auto; }
 .nav-links a {
   color: var(--text-secondary); text-decoration: none; font-size: 0.9rem;
@@ -293,7 +292,8 @@ nav.scrolled { padding: 14px 60px; background: rgba(2, 4, 8, 0.9); }
   background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
   color: #fff; border: none; border-radius: 50px; font-size: 0.95rem; font-weight: 600;
   text-decoration: none; display: inline-flex; align-items: center; gap: 8px;
-  transition: all 0.3s; box-shadow: 0 0 36px rgba(0,212,255,0.28);
+  transition: transform 0.35s var(--spring), box-shadow 0.35s var(--spring);
+  box-shadow: 0 0 36px rgba(0,212,255,0.28);
   position: relative; overflow: hidden;
 }
 .btn-primary::before {
@@ -302,18 +302,21 @@ nav.scrolled { padding: 14px 60px; background: rgba(2, 4, 8, 0.9); }
   opacity: 0; transition: opacity 0.3s;
 }
 .btn-primary:hover::before { opacity: 1; }
-.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 0 56px rgba(0,212,255,0.46); }
+.btn-primary:hover { transform: translateY(-3px) scale(1.03); box-shadow: 0 0 60px rgba(0,212,255,0.5), 0 10px 30px rgba(0,0,0,0.3); }
+.btn-primary:active { transform: translateY(0) scale(0.98); }
 .btn-primary span { position: relative; z-index: 1; }
 
 .btn-secondary {
   padding: 15px 36px; background: transparent; color: var(--text-primary);
   border: 1px solid var(--glass-border); border-radius: 50px; font-size: 0.95rem;
   font-weight: 500; text-decoration: none; display: inline-flex; align-items: center;
-  gap: 8px; transition: all 0.3s; backdrop-filter: blur(10px);
+  gap: 8px;
+  transition: border-color 0.3s, color 0.3s, box-shadow 0.35s var(--spring), transform 0.35s var(--spring);
+  backdrop-filter: blur(10px);
 }
 .btn-secondary:hover {
   border-color: var(--accent-blue); color: var(--accent-blue);
-  box-shadow: 0 0 28px rgba(0,212,255,0.18);
+  box-shadow: 0 0 28px rgba(0,212,255,0.18); transform: translateY(-2px);
 }
 
 /* Banner dots */
@@ -390,9 +393,16 @@ nav.scrolled { padding: 14px 60px; background: rgba(2, 4, 8, 0.9); }
   text-align: center; padding: 32px 20px;
   background: var(--glass); border: 1px solid var(--glass-border);
   border-radius: 16px; backdrop-filter: blur(10px);
-  transition: all 0.3s;
+  transition: border-color 0.3s, transform 0.4s var(--spring), box-shadow 0.4s var(--spring);
+  position: relative; overflow: hidden;
 }
-.stat-card:hover { border-color: var(--accent-blue); transform: translateY(-4px); box-shadow: 0 12px 40px rgba(0,212,255,0.1); }
+.stat-card::after {
+  content: ''; position: absolute; inset: 0; border-radius: 16px;
+  background: radial-gradient(circle at 50% 0%, rgba(0,212,255,0.07), transparent 70%);
+  opacity: 0; transition: opacity 0.4s;
+}
+.stat-card:hover::after { opacity: 1; }
+.stat-card:hover { border-color: rgba(0,212,255,0.5); transform: translateY(-6px) scale(1.02); box-shadow: 0 20px 50px rgba(0,212,255,0.15), 0 0 0 1px rgba(0,212,255,0.1); }
 .stat-number {
   font-size: 2.8rem; font-weight: 900;
   background: linear-gradient(135deg, var(--accent-blue), var(--accent-cyan));
@@ -468,6 +478,17 @@ section { position: relative; z-index: 1; padding: 100px 60px; }
   display: flex; align-items: center; justify-content: center;
   font-size: 1.2rem; font-weight: 800;
 }
+.partner-logo-img {
+  height: 42px; width: auto; max-width: 100px;
+  border-radius: 10px; object-fit: contain;
+  background: rgba(255,255,255,0.10); padding: 8px;
+  flex-shrink: 0; border: 1px solid rgba(255,255,255,0.08);
+  transition: background 0.3s ease, transform 0.3s ease;
+}
+.partner-badge:hover .partner-logo-img {
+  background: rgba(255,255,255,0.18);
+  transform: scale(1.08);
+}
 .partner-name { font-size: 0.88rem; font-weight: 600; color: var(--text-secondary); white-space: nowrap; }
 .partner-type { font-size: 0.68rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.1em; }
 
@@ -500,9 +521,10 @@ section { position: relative; z-index: 1; padding: 100px 60px; }
 .about-pillars { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 36px; }
 .pillar {
   padding: 18px; background: var(--glass); border: 1px solid var(--glass-border);
-  border-radius: 12px; backdrop-filter: blur(10px); transition: all 0.3s;
+  border-radius: 12px; backdrop-filter: blur(10px);
+  transition: border-color 0.3s, transform 0.4s var(--spring), box-shadow 0.4s var(--spring);
 }
-.pillar:hover { border-color: var(--accent-blue); transform: translateY(-4px); box-shadow: 0 8px 28px rgba(0,212,255,0.12); }
+.pillar:hover { border-color: rgba(0,212,255,0.45); transform: translateY(-5px) scale(1.02); box-shadow: 0 10px 30px rgba(0,212,255,0.14); }
 .pillar-icon { font-size: 1.4rem; margin-bottom: 8px; }
 .pillar-title { font-size: 0.9rem; font-weight: 700; color: var(--text-primary); margin-bottom: 4px; }
 .pillar-desc { font-size: 0.78rem; color: var(--text-muted); }
@@ -531,12 +553,20 @@ section { position: relative; z-index: 1; padding: 100px 60px; }
 }
 .highlight-card {
   background: var(--bg-card); border: 1px solid var(--glass-border);
-  border-radius: 20px; overflow: hidden; transition: all 0.4s; text-decoration: none;
-  display: flex; flex-direction: column;
+  border-radius: 20px; overflow: hidden;
+  transition: border-color 0.35s, transform 0.5s var(--spring), box-shadow 0.5s var(--spring);
+  text-decoration: none; display: flex; flex-direction: column;
+  position: relative;
 }
-.highlight-card:hover { border-color: rgba(0,212,255,0.4); transform: translateY(-8px); box-shadow: 0 20px 60px rgba(0,212,255,0.12); }
-.highlight-img { width: 100%; height: 200px; object-fit: cover; filter: brightness(0.75) saturate(1.2); transition: filter 0.4s; }
-.highlight-card:hover .highlight-img { filter: brightness(0.9) saturate(1.4); }
+.highlight-card::before {
+  content: ''; position: absolute; inset: 0; z-index: 1; border-radius: 20px;
+  background: linear-gradient(135deg, rgba(0,212,255,0.04), rgba(168,85,247,0.04));
+  opacity: 0; transition: opacity 0.4s;
+}
+.highlight-card:hover::before { opacity: 1; }
+.highlight-card:hover { border-color: rgba(0,212,255,0.45); transform: translateY(-10px) scale(1.01); box-shadow: 0 24px 70px rgba(0,212,255,0.14), 0 0 0 1px rgba(0,212,255,0.08); }
+.highlight-img { width: 100%; height: 200px; object-fit: cover; filter: brightness(0.75) saturate(1.2); transition: filter 0.5s, transform 0.5s var(--spring); }
+.highlight-card:hover .highlight-img { filter: brightness(0.95) saturate(1.5); transform: scale(1.04); }
 .highlight-body { padding: 28px; flex: 1; display: flex; flex-direction: column; }
 .highlight-icon { font-size: 2rem; margin-bottom: 14px; }
 .highlight-name { font-size: 1.1rem; font-weight: 700; color: var(--text-primary); margin-bottom: 8px; }
@@ -682,12 +712,28 @@ footer {
 .established { font-size: 0.78rem; color: var(--text-muted); }
 
 /* ── Reveal ── */
-.reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.7s ease, transform 0.7s ease; }
-.reveal.visible { opacity: 1; transform: translateY(0); }
-.reveal-delay-1 { transition-delay: 0.1s; }
-.reveal-delay-2 { transition-delay: 0.2s; }
-.reveal-delay-3 { transition-delay: 0.3s; }
-.reveal-delay-4 { transition-delay: 0.4s; }
+.reveal {
+  opacity: 0;
+  transform: translateY(32px);
+  filter: blur(4px);
+  transition: opacity 0.65s var(--spring), transform 0.65s var(--spring), filter 0.65s var(--spring);
+  will-change: transform, opacity;
+}
+.reveal.visible { opacity: 1; transform: translateY(0); filter: blur(0px); }
+.reveal-left  { opacity: 0; transform: translateX(-32px); filter: blur(4px);
+  transition: opacity 0.65s var(--spring), transform 0.65s var(--spring), filter 0.65s var(--spring); }
+.reveal-right { opacity: 0; transform: translateX(32px); filter: blur(4px);
+  transition: opacity 0.65s var(--spring), transform 0.65s var(--spring), filter 0.65s var(--spring); }
+.reveal-scale { opacity: 0; transform: scale(0.88); filter: blur(6px);
+  transition: opacity 0.65s var(--spring), transform 0.65s var(--spring), filter 0.65s var(--spring); }
+.reveal-left.visible, .reveal-right.visible { opacity: 1; transform: translateX(0); filter: blur(0px); }
+.reveal-scale.visible { opacity: 1; transform: scale(1); filter: blur(0px); }
+.reveal-delay-1 { transition-delay: 0.08s; }
+.reveal-delay-2 { transition-delay: 0.16s; }
+.reveal-delay-3 { transition-delay: 0.24s; }
+.reveal-delay-4 { transition-delay: 0.32s; }
+.reveal-delay-5 { transition-delay: 0.40s; }
+.reveal-delay-6 { transition-delay: 0.48s; }
 
 /* ── Grid BG ── */
 .grid-bg {
@@ -861,9 +907,144 @@ footer {
   }
   .slide-3d-card img { height: 220px; }
 }
+
+/* ── Brand name red ── */
+.nav-logo {
+  color: #FF1A1A;
+  -webkit-text-fill-color: #FF1A1A;
+  background: none;
+}
+.nav-logo span {
+  color: #FF1A1A;
+  -webkit-text-fill-color: #FF1A1A;
+}
+.brand-name {
+  color: #FF1A1A !important;
+  -webkit-text-fill-color: #FF1A1A !important;
+  background: none !important;
+  background-image: none !important;
+}
+.footer-copy .brand-name {
+  color: #FF1A1A;
+}
+
+/* ── Cursor Glow ── */
+#cursor-glow {
+  position: fixed; pointer-events: none; z-index: 9999;
+  width: 420px; height: 420px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(0,212,255,0.06) 0%, transparent 70%);
+  transform: translate(-50%, -50%);
+  transition: opacity 0.4s;
+  mix-blend-mode: screen;
+}
+
+/* ── Floating ambient orbs ── */
+.orb {
+  position: fixed; border-radius: 50%; pointer-events: none; z-index: 0;
+  filter: blur(80px); animation: orb-drift linear infinite;
+  mix-blend-mode: screen;
+}
+@keyframes orb-drift {
+  0%   { transform: translate(0, 0) scale(1); }
+  33%  { transform: translate(40px, -60px) scale(1.1); }
+  66%  { transform: translate(-30px, 40px) scale(0.9); }
+  100% { transform: translate(0, 0) scale(1); }
+}
+
+/* ── Section title shimmer on reveal ── */
+@keyframes shimmer-sweep {
+  0%   { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+.section-title.visible span,
+.slide-title span,
+.sec-title.visible span,
+.page-hero-title.visible span {
+  background-size: 200% auto;
+  animation: shimmer-sweep 3s linear infinite;
+}
+
+/* ── Partner badge hover glow ── */
+.partner-badge {
+  transition: border-color 0.35s, transform 0.4s var(--spring), box-shadow 0.4s var(--spring);
+}
+.partner-badge:hover {
+  border-color: rgba(0,212,255,0.4);
+  box-shadow: 0 10px 40px rgba(0,212,255,0.12), 0 0 0 1px rgba(0,212,255,0.08);
+  transform: translateY(-5px) scale(1.03);
+}
+
+/* ── Contact card improved hover ── */
+.contact-card {
+  transition: border-color 0.3s, transform 0.4s var(--spring), box-shadow 0.4s var(--spring);
+}
+.contact-card:hover {
+  border-color: var(--accent-blue);
+  transform: translateX(8px);
+  box-shadow: 0 8px 32px rgba(0,212,255,0.1);
+}
+
+/* ── Animated gradient underline on nav links ── */
+.nav-links a::after {
+  transition: width 0.35s var(--spring) !important;
+}
+
+/* ── Preview card improved hover ── */
+.preview-card {
+  transition: border-color 0.35s, transform 0.5s var(--spring), box-shadow 0.5s var(--spring) !important;
+}
+.preview-card:hover {
+  border-color: rgba(0,212,255,0.4) !important;
+  transform: translateY(-8px) scale(1.01) !important;
+  box-shadow: 0 24px 60px rgba(0,212,255,0.12) !important;
+}
+.preview-card-img {
+  transition: filter 0.5s, transform 0.5s var(--spring) !important;
+}
+.preview-card:hover .preview-card-img {
+  filter: brightness(0.95) saturate(1.5) !important;
+  transform: scale(1.04) !important;
+}
+
+/* ── Scroll-driven section fade ── */
+@supports (animation-timeline: scroll()) {
+  .section-parallax {
+    animation: section-rise linear both;
+    animation-timeline: view();
+    animation-range: entry 0% entry 40%;
+  }
+  @keyframes section-rise {
+    from { opacity: 0.4; transform: translateY(24px); }
+    to   { opacity: 1;   transform: translateY(0); }
+  }
+}
+
+/* ── prefers-reduced-motion: disable all non-essential motion ── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .reveal, .reveal-left, .reveal-right, .reveal-scale {
+    opacity: 1; transform: none; filter: none;
+    transition: none !important;
+  }
+  #cursor-glow, .orb { display: none; }
+  .partners-track { animation: none; }
+}
+
 </style>
 </head>
 <body>
+
+<!-- Cursor glow -->
+<div id="cursor-glow"></div>
+<!-- Ambient orbs -->
+<div class="orb" style="width:500px;height:500px;background:rgba(0,212,255,0.04);top:10%;left:5%;animation-duration:18s;"></div>
+<div class="orb" style="width:380px;height:380px;background:rgba(124,58,237,0.05);top:50%;right:8%;animation-duration:24s;animation-delay:-8s;"></div>
+<div class="orb" style="width:300px;height:300px;background:rgba(0,255,136,0.03);bottom:15%;left:40%;animation-duration:20s;animation-delay:-4s;"></div>
 
 <!-- 3D Canvas Background -->
 <canvas id="hero-canvas"></canvas>
@@ -878,6 +1059,7 @@ footer {
     <li><a href="services.html">Services</a></li>
     <li><a href="projects.html">Projects</a></li>
     <li><a href="team.html">Team</a></li>
+    <li><a href="careers.html">Careers</a></li>
     <li><a href="collaborate.html" class="nav-cta">Let's Collaborate</a></li>
   </ul>
   <div class="hamburger" id="hamburger" onclick="toggleMenu()">
@@ -1055,78 +1237,62 @@ footer {
 
       <!-- Set A (originals) -->
       <div class="partner-badge">
-        <div class="partner-logo-placeholder" style="background:linear-gradient(135deg,#0078d4,#005a9e);color:#fff;">Az</div>
+        <img src="https://api.iconify.design/logos/microsoft-azure.svg" alt="Microsoft Azure" class="partner-logo-img">
         <div><div class="partner-name">Microsoft Azure</div><div class="partner-type">Cloud Partner</div></div>
       </div>
       <div class="partner-badge">
-        <div class="partner-logo-placeholder" style="background:linear-gradient(135deg,#ff9900,#c87200);color:#fff;">AWS</div>
+        <img src="https://api.iconify.design/logos/aws.svg" alt="Amazon Web Services" class="partner-logo-img">
         <div><div class="partner-name">Amazon Web Services</div><div class="partner-type">Cloud Partner</div></div>
       </div>
       <div class="partner-badge">
-        <div class="partner-logo-placeholder" style="background:linear-gradient(135deg,#4285f4,#34a853);color:#fff;">Gc</div>
+        <img src="https://api.iconify.design/logos/google-cloud.svg" alt="Google Cloud" class="partner-logo-img">
         <div><div class="partner-name">Google Cloud</div><div class="partner-type">Cloud Partner</div></div>
       </div>
       <div class="partner-badge">
-        <div class="partner-logo-placeholder" style="background:linear-gradient(135deg,#00a1e0,#0070d2);color:#fff;">Sf</div>
+        <img src="https://api.iconify.design/logos/salesforce.svg" alt="Salesforce" class="partner-logo-img">
         <div><div class="partner-name">Salesforce</div><div class="partner-type">CRM Platform</div></div>
       </div>
       <div class="partner-badge">
-        <div class="partner-logo-placeholder" style="background:linear-gradient(135deg,#f05133,#c0392b);color:#fff;">SAP</div>
+        <img src="https://api.iconify.design/logos/sap.svg" alt="SAP" class="partner-logo-img">
         <div><div class="partner-name">SAP</div><div class="partner-type">ERP Partner</div></div>
       </div>
       <div class="partner-badge">
-        <div class="partner-logo-placeholder" style="background:linear-gradient(135deg,#e8452c,#c0392b);color:#fff;">Zo</div>
+        <img src="https://api.iconify.design/logos/zoho.svg" alt="Zoho" class="partner-logo-img">
         <div><div class="partner-name">Zoho</div><div class="partner-type">Business Suite</div></div>
       </div>
       <div class="partner-badge">
-        <div class="partner-logo-placeholder" style="background:linear-gradient(135deg,#7c3aed,#5b21b6);color:#fff;">◆</div>
-        <div><div class="partner-name">Partner Placeholder</div><div class="partner-type">Technology</div></div>
-      </div>
-      <div class="partner-badge">
-        <div class="partner-logo-placeholder" style="background:linear-gradient(135deg,#00d4ff,#0098b8);color:#fff;">◈</div>
-        <div><div class="partner-name">Partner Placeholder</div><div class="partner-type">Integration</div></div>
-      </div>
-      <div class="partner-badge">
-        <div class="partner-logo-placeholder" style="background:linear-gradient(135deg,#00ff88,#00b85e);color:#111;">◉</div>
-        <div><div class="partner-name">Partner Placeholder</div><div class="partner-type">Sustainability</div></div>
+        <img src="iamnuts-logo.svg" alt="I Am Nuts" class="partner-logo-img">
+        <div><div class="partner-name">I Am Nuts</div><div class="partner-type">Client Partner</div></div>
       </div>
 
       <!-- Set B (duplicates for seamless loop) -->
       <div class="partner-badge">
-        <div class="partner-logo-placeholder" style="background:linear-gradient(135deg,#0078d4,#005a9e);color:#fff;">Az</div>
+        <img src="https://api.iconify.design/logos/microsoft-azure.svg" alt="Microsoft Azure" class="partner-logo-img">
         <div><div class="partner-name">Microsoft Azure</div><div class="partner-type">Cloud Partner</div></div>
       </div>
       <div class="partner-badge">
-        <div class="partner-logo-placeholder" style="background:linear-gradient(135deg,#ff9900,#c87200);color:#fff;">AWS</div>
+        <img src="https://api.iconify.design/logos/aws.svg" alt="Amazon Web Services" class="partner-logo-img">
         <div><div class="partner-name">Amazon Web Services</div><div class="partner-type">Cloud Partner</div></div>
       </div>
       <div class="partner-badge">
-        <div class="partner-logo-placeholder" style="background:linear-gradient(135deg,#4285f4,#34a853);color:#fff;">Gc</div>
+        <img src="https://api.iconify.design/logos/google-cloud.svg" alt="Google Cloud" class="partner-logo-img">
         <div><div class="partner-name">Google Cloud</div><div class="partner-type">Cloud Partner</div></div>
       </div>
       <div class="partner-badge">
-        <div class="partner-logo-placeholder" style="background:linear-gradient(135deg,#00a1e0,#0070d2);color:#fff;">Sf</div>
+        <img src="https://api.iconify.design/logos/salesforce.svg" alt="Salesforce" class="partner-logo-img">
         <div><div class="partner-name">Salesforce</div><div class="partner-type">CRM Platform</div></div>
       </div>
       <div class="partner-badge">
-        <div class="partner-logo-placeholder" style="background:linear-gradient(135deg,#f05133,#c0392b);color:#fff;">SAP</div>
+        <img src="https://api.iconify.design/logos/sap.svg" alt="SAP" class="partner-logo-img">
         <div><div class="partner-name">SAP</div><div class="partner-type">ERP Partner</div></div>
       </div>
       <div class="partner-badge">
-        <div class="partner-logo-placeholder" style="background:linear-gradient(135deg,#e8452c,#c0392b);color:#fff;">Zo</div>
+        <img src="https://api.iconify.design/logos/zoho.svg" alt="Zoho" class="partner-logo-img">
         <div><div class="partner-name">Zoho</div><div class="partner-type">Business Suite</div></div>
       </div>
       <div class="partner-badge">
-        <div class="partner-logo-placeholder" style="background:linear-gradient(135deg,#7c3aed,#5b21b6);color:#fff;">◆</div>
-        <div><div class="partner-name">Partner Placeholder</div><div class="partner-type">Technology</div></div>
-      </div>
-      <div class="partner-badge">
-        <div class="partner-logo-placeholder" style="background:linear-gradient(135deg,#00d4ff,#0098b8);color:#fff;">◈</div>
-        <div><div class="partner-name">Partner Placeholder</div><div class="partner-type">Integration</div></div>
-      </div>
-      <div class="partner-badge">
-        <div class="partner-logo-placeholder" style="background:linear-gradient(135deg,#00ff88,#00b85e);color:#111;">◉</div>
-        <div><div class="partner-name">Partner Placeholder</div><div class="partner-type">Sustainability</div></div>
+        <img src="iamnuts-logo.svg" alt="I Am Nuts" class="partner-logo-img">
+        <div><div class="partner-name">I Am Nuts</div><div class="partner-type">Client Partner</div></div>
       </div>
 
     </div>
@@ -1156,22 +1322,18 @@ footer {
       </p>
       <div class="about-pillars reveal reveal-delay-4">
         <div class="pillar">
-          <div class="pillar-icon">🎯</div>
           <div class="pillar-title">Client First</div>
           <div class="pillar-desc">Your goals drive every decision we make.</div>
         </div>
         <div class="pillar">
-          <div class="pillar-icon">⚙️</div>
           <div class="pillar-title">Engineering Depth</div>
           <div class="pillar-desc">Production-grade systems, not prototypes.</div>
         </div>
         <div class="pillar">
-          <div class="pillar-icon">🌱</div>
           <div class="pillar-title">Sustainable Tech</div>
           <div class="pillar-desc">Building with long-term impact in mind.</div>
         </div>
         <div class="pillar">
-          <div class="pillar-icon">🚀</div>
           <div class="pillar-title">Move Fast</div>
           <div class="pillar-desc">Rapid delivery without sacrificing quality.</div>
         </div>
@@ -1199,7 +1361,6 @@ footer {
         src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80"
         alt="ERP Dashboard">
       <div class="highlight-body">
-        <div class="highlight-icon">🏭</div>
         <div class="highlight-name">ERP & Enterprise Systems</div>
         <div class="highlight-desc">Unify finance, supply chain, HR, and operations on a single intelligent platform with real-time analytics.</div>
         <span class="highlight-tag">Core Enterprise</span>
@@ -1210,7 +1371,6 @@ footer {
         src="https://images.unsplash.com/photo-1485827404703-89b55fcc595e?auto=format&fit=crop&w=800&q=80"
         alt="AI and Robotics Technology">
       <div class="highlight-body">
-        <div class="highlight-icon">🤖</div>
         <div class="highlight-name">AI, IoT & Automation</div>
         <div class="highlight-desc">Intelligent automation, IoT sensor networks, RPA workflows, and machine learning that make your operations self-improving.</div>
         <span class="highlight-tag">Technology</span>
@@ -1221,7 +1381,6 @@ footer {
         src="https://images.unsplash.com/photo-1432888622747-4eb9a8efeb07?auto=format&fit=crop&w=800&q=80"
         alt="Sales CRM Analytics">
       <div class="highlight-body">
-        <div class="highlight-icon">🤝</div>
         <div class="highlight-name">CRM & Digital Growth</div>
         <div class="highlight-desc">AI-powered CRM, e-commerce platforms, marketing automation, and Salesforce implementations that drive revenue.</div>
         <span class="highlight-tag">Sales & Marketing</span>
@@ -1309,21 +1468,18 @@ footer {
       </p>
       <div class="contact-cards reveal reveal-delay-3">
         <div class="contact-card">
-          <div class="contact-card-icon">📞</div>
           <div>
             <div class="contact-card-label">Phone</div>
-            <div class="contact-card-value">+91 96886 85240</div>
+            <div class="contact-card-value">+91 9629051083</div>
           </div>
         </div>
         <div class="contact-card">
-          <div class="contact-card-icon">✉️</div>
           <div>
             <div class="contact-card-label">Email</div>
-            <div class="contact-card-value">venkat@rapdfly.com</div>
+            <div class="contact-card-value">gowtham@rapdfly.com</div>
           </div>
         </div>
         <div class="contact-card">
-          <div class="contact-card-icon">📍</div>
           <div>
             <div class="contact-card-label">Address</div>
             <div class="contact-card-value">No. 29/A (E), 27th Main Rd, 1st Sector,<br>HSR Layout, Bangalore — 560102</div>
@@ -1331,9 +1487,9 @@ footer {
         </div>
       </div>
       <div class="contact-social reveal reveal-delay-4">
-        <a href="#" class="social-link">📘 Facebook</a>
-        <a href="#" class="social-link">📸 Instagram</a>
-        <a href="#" class="social-link">💼 LinkedIn</a>
+        <a href="#" class="social-link">Facebook</a>
+        <a href="#" class="social-link">Instagram</a>
+        <a href="#" class="social-link">LinkedIn</a>
       </div>
     </div>
     <div class="contact-form-box reveal reveal-delay-2">
@@ -1394,9 +1550,9 @@ footer {
         enterprise IT solutions that put you first and support growth at every step.
       </p>
       <div style="display:flex;gap:10px;flex-wrap:wrap;">
-        <a href="#" class="social-link" style="padding:8px 14px;font-size:0.8rem;">📘</a>
-        <a href="#" class="social-link" style="padding:8px 14px;font-size:0.8rem;">📸</a>
-        <a href="#" class="social-link" style="padding:8px 14px;font-size:0.8rem;">💼</a>
+        <a href="#" class="social-link" style="padding:8px 14px;font-size:0.8rem;"></a>
+        <a href="#" class="social-link" style="padding:8px 14px;font-size:0.8rem;"></a>
+        <a href="#" class="social-link" style="padding:8px 14px;font-size:0.8rem;"></a>
       </div>
     </div>
     <div>
@@ -1422,15 +1578,15 @@ footer {
     <div>
       <div class="footer-heading">Contact</div>
       <ul class="footer-links">
-        <li><a href="tel:+919688685240">+91 96886 85240</a></li>
-        <li><a href="mailto:venkat@rapdfly.com">venkat@rapdfly.com</a></li>
+        <li><a href="tel:+919629051083">+91 9629051083</a></li>
+        <li><a href="mailto:gowtham@rapdfly.com">gowtham@rapdfly.com</a></li>
         <li><a href="#">HSR Layout, Bangalore</a></li>
         <li><a href="#">Karnataka — 560102</a></li>
       </ul>
     </div>
   </div>
   <div class="footer-bottom">
-    <div class="footer-copy">© 2025 <span>Rapdfly</span>. All rights reserved.</div>
+    <div class="footer-copy">© 2025 <span class="brand-name">Rapdfly</span>. All rights reserved.</div>
     <div class="established">Est. 2020 · Bangalore, India</div>
   </div>
 </footer>
@@ -1539,11 +1695,9 @@ footer {
   startAuto();
 })();
 
-// ── Three.js Particle Background ─────────────────────────────────────────
-// Three.js particle colour palette (dark mode only)
 const PARTICLE_COLORS = {
-  p1: [0, 0.83, 1],        // cyan   #00d4ff
-  p2: [0.6, 0.33, 0.93],   // violet #9954ed
+  p1: [0, 0.83, 1],
+  p2: [0.6, 0.33, 0.93],
   shape: 0x00d4ff,
   shapeOpacity: 0.12,
   particleOpacity: 0.6
@@ -1554,12 +1708,9 @@ const PARTICLE_COLORS = {
   const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
   renderer.setSize(window.innerWidth, window.innerHeight);
-
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
   camera.position.z = 50;
-
-  // Store random t values so we can recolour without new random()
   const particleCount = 700;
   const positions = new Float32Array(particleCount * 3);
   const colors    = new Float32Array(particleCount * 3);
@@ -1575,7 +1726,6 @@ const PARTICLE_COLORS = {
   pGeo.setAttribute('color',    new THREE.BufferAttribute(colors, 3));
   const pMat = new THREE.PointsMaterial({ size: 0.35, vertexColors: true, transparent: true, opacity: 0.6 });
   scene.add(new THREE.Points(pGeo, pMat));
-
   const shapes = [];
   [
     { geo: new THREE.IcosahedronGeometry(6, 0), pos: [20,  10, -20], speed: 0.008 },
@@ -1592,8 +1742,6 @@ const PARTICLE_COLORS = {
     scene.add(mesh);
     shapes.push(mesh);
   });
-
-  // Initialise particle colours (dark mode always)
   (function applyColors() {
     const pal = PARTICLE_COLORS;
     const col = pGeo.attributes.color.array;
@@ -1608,13 +1756,11 @@ const PARTICLE_COLORS = {
       s.material.opacity = pal.shapeOpacity;
     });
   })();
-
   let mouseX = 0, mouseY = 0;
   document.addEventListener('mousemove', e => {
     mouseX = (e.clientX / window.innerWidth  - 0.5) * 2;
     mouseY = (e.clientY / window.innerHeight - 0.5) * 2;
   });
-
   let time = 0;
   function animate() {
     requestAnimationFrame(animate);
@@ -1634,7 +1780,6 @@ const PARTICLE_COLORS = {
     renderer.render(scene, camera);
   }
   animate();
-
   window.addEventListener('resize', () => {
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
@@ -1642,33 +1787,65 @@ const PARTICLE_COLORS = {
   });
 })();
 
-// ── Scroll Reveal ─────────────────────────────────────────────────────────
-const observer = new IntersectionObserver(entries => {
+// ── Scroll Reveal (all variants) ──────────────────────────────────────────
+const revealObs = new IntersectionObserver(entries => {
   entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
-}, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
-document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+}, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale').forEach(el => revealObs.observe(el));
 
-// ── Counter Animation ─────────────────────────────────────────────────────
-const counterObserver = new IntersectionObserver(entries => {
+// ── Counter Animation (RAF + easeOutExpo) ─────────────────────────────────
+function easeOutExpo(t) { return t === 1 ? 1 : 1 - Math.pow(2, -10 * t); }
+const counterObs = new IntersectionObserver(entries => {
   entries.forEach(e => {
     if (!e.isIntersecting) return;
     const el = e.target;
     const target = parseInt(el.dataset.count);
-    let current = 0;
-    const step = target / 60;
-    const timer = setInterval(() => {
-      current += step;
-      if (current >= target) {
-        el.textContent = target + (target === 99 ? '%' : '+');
-        clearInterval(timer);
-      } else {
-        el.textContent = Math.floor(current) + (target === 99 ? '%' : '+');
-      }
-    }, 20);
-    counterObserver.unobserve(el);
+    const suffix = el.dataset.suffix || (target === 99 ? '%' : '+');
+    const duration = 1600;
+    const start = performance.now();
+    function tick(now) {
+      const t = Math.min((now - start) / duration, 1);
+      const eased = easeOutExpo(t);
+      el.textContent = Math.round(eased * target) + suffix;
+      if (t < 1) requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+    counterObs.unobserve(el);
   });
-}, { threshold: 0.5 });
-document.querySelectorAll('[data-count]').forEach(c => counterObserver.observe(c));
+}, { threshold: 0.4 });
+document.querySelectorAll('[data-count]').forEach(c => counterObs.observe(c));
+
+// ── Cursor Glow ───────────────────────────────────────────────────────────
+(function initCursorGlow() {
+  const glow = document.getElementById('cursor-glow');
+  if (!glow || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  let mx = -500, my = -500, cx = -500, cy = -500;
+  document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+  document.addEventListener('mouseleave', () => { mx = -500; my = -500; });
+  (function animGlow() {
+    cx += (mx - cx) * 0.08;
+    cy += (my - cy) * 0.08;
+    glow.style.left = cx + 'px';
+    glow.style.top  = cy + 'px';
+    requestAnimationFrame(animGlow);
+  })();
+})();
+
+// ── Magnetic Buttons ──────────────────────────────────────────────────────
+(function initMagnetic() {
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  document.querySelectorAll('.btn-primary, .btn-secondary, .nav-cta').forEach(btn => {
+    btn.addEventListener('mousemove', e => {
+      const r = btn.getBoundingClientRect();
+      const dx = e.clientX - (r.left + r.width / 2);
+      const dy = e.clientY - (r.top  + r.height / 2);
+      btn.style.transform = `translate(${dx * 0.18}px, ${dy * 0.18}px) scale(1.04)`;
+    });
+    btn.addEventListener('mouseleave', () => {
+      btn.style.transform = '';
+    });
+  });
+})();
 
 // ── Theme Toggle ──────────────────────────────────────────────────────────
 // ── Navbar Scroll ─────────────────────────────────────────────────────────
@@ -1705,7 +1882,7 @@ function handleSubmit(e) {
   btn.textContent = 'Sending...';
   btn.disabled = true;
   setTimeout(() => {
-    btn.textContent = '✓ Message Sent!';
+    btn.textContent = ' Message Sent!';
     btn.style.background = 'linear-gradient(135deg,#00ff88,#00d4ff)';
     setTimeout(() => {
       btn.textContent = 'Send Message →';
