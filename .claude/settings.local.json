@@ -44,7 +44,10 @@
       "Bash(vercel promote *)",
       "Bash(git init *)",
       "Bash(git add *)",
-      "Bash(git commit *)"
+      "Bash(git commit *)",
+      "Bash(git remote *)",
+      "Bash(git branch *)",
+      "Bash(git push *)"
     ]
   }
 }
