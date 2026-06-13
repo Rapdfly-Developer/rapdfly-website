@@ -1171,34 +1171,34 @@ footer {
       <div class="contact-form reveal rd2">
         <div class="form-title">Send us a message</div>
         <div class="form-subtitle">We'll get back to you within one business day.</div>
-        <form onsubmit="handleSubmit(event)">
+        <form id="contactForm" onsubmit="handleSubmit(event)">
           <div class="form-row">
             <div class="form-group">
               <label class="form-label">First Name</label>
-              <input type="text" class="form-input" placeholder="John" required>
+              <input type="text" name="firstName" class="form-input" placeholder="John" required>
             </div>
             <div class="form-group">
               <label class="form-label">Last Name</label>
-              <input type="text" class="form-input" placeholder="Doe" required>
+              <input type="text" name="lastName" class="form-input" placeholder="Doe" required>
             </div>
           </div>
           <div class="form-group">
             <label class="form-label">Email Address</label>
-            <input type="email" class="form-input" placeholder="john@company.com" required>
+            <input type="email" name="email" class="form-input" placeholder="john@company.com" required>
           </div>
           <div class="form-row">
             <div class="form-group">
               <label class="form-label">Company</label>
-              <input type="text" class="form-input" placeholder="Your Company">
+              <input type="text" name="company" class="form-input" placeholder="Your Company">
             </div>
             <div class="form-group">
               <label class="form-label">Phone</label>
-              <input type="tel" class="form-input" placeholder="+91 00000 00000">
+              <input type="tel" name="phone" class="form-input" placeholder="+91 00000 00000">
             </div>
           </div>
           <div class="form-group">
             <label class="form-label">Engagement Model</label>
-            <select class="form-select form-input">
+            <select name="engagementModel" class="form-select form-input">
               <option value="">Select a model...</option>
               <option>On Demand Team</option>
               <option>Dedicated Team</option>
@@ -1209,7 +1209,7 @@ footer {
           </div>
           <div class="form-group">
             <label class="form-label">Service of Interest</label>
-            <select class="form-select form-input">
+            <select name="service" class="form-select form-input">
               <option value="">Select a service...</option>
               <option>ERP, Enterprise Resource Planning</option>
               <option>CRM, Customer Relationship Management</option>
@@ -1231,7 +1231,7 @@ footer {
           </div>
           <div class="form-group">
             <label class="form-label">Tell us about your project</label>
-            <textarea class="form-textarea" placeholder="Describe your challenge, goals, timeline, or anything else that helps us understand your needs..."></textarea>
+            <textarea name="message" class="form-textarea" placeholder="Describe your challenge, goals, timeline, or anything else that helps us understand your needs..." required></textarea>
           </div>
           <button type="submit" class="form-submit" id="submitBtn">Send Message →</button>
           <p class="form-note">We respect your privacy. Your information will never be shared or sold.</p>
@@ -1374,23 +1374,53 @@ function toggleMenu() {
 }
 document.querySelectorAll('.nav-links a').forEach(a => a.addEventListener('click', () => document.getElementById('navLinks').classList.remove('open')));
 
-function handleSubmit(e) {
+async function handleSubmit(e) {
   e.preventDefault();
   const btn = document.getElementById('submitBtn');
+  const form = document.getElementById('contactForm');
+  const data = Object.fromEntries(new FormData(form).entries());
+
+  const name = ((data.firstName || '') + ' ' + (data.lastName || '')).trim();
+  const payload = {
+    name,
+    email: data.email,
+    company: data.company,
+    phone: data.phone,
+    engagementModel: data.engagementModel,
+    service: data.service,
+    message: data.message,
+  };
+
   btn.textContent = 'Sending...';
   btn.disabled = true;
-  setTimeout(() => {
-    btn.textContent = ' Message Sent! We\'ll be in touch soon.';
+
+  try {
+    const res = await fetch('/api/contact', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+    const json = await res.json();
+    if (!res.ok) throw new Error(json.error || 'Server error');
+    btn.textContent = 'Message Sent! We\'ll be in touch soon.';
     btn.style.background = 'linear-gradient(135deg,#00ff88,#00d4ff)';
     btn.style.color = '#000';
+    form.reset();
     setTimeout(() => {
       btn.textContent = 'Send Message →';
       btn.style.background = '';
       btn.style.color = '';
       btn.disabled = false;
-      e.target.reset();
+    }, 5000);
+  } catch (err) {
+    btn.textContent = 'Failed to send. Please try again.';
+    btn.style.background = 'linear-gradient(135deg,#ef4444,#dc2626)';
+    setTimeout(() => {
+      btn.textContent = 'Send Message →';
+      btn.style.background = '';
+      btn.disabled = false;
     }, 4000);
-  }, 1500);
+  }
 }
 
 // Theme-aware particle/shape recolour
