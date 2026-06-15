@@ -1416,7 +1416,7 @@ footer {
       <div class="husk-inner">
         <div class="husk-image">
           <div class="husk-badge">Sustainability</div>
-          <img src="husk wood hero.png" alt="Husk Wood Extraction">
+          <img src="husk-wood-hero.png" alt="Husk Wood Extraction">
         </div>
         <div class="husk-content">
           <div class="fp-category" style="color:var(--accent-green);">Agri-Tech · IoT · Sustainability · Process Engineering</div>
@@ -1570,10 +1570,10 @@ footer {
     </div>
     <div><div class="footer-heading">Services</div><ul class="footer-links"><li><a href="services.html">Consulting</a></li><li><a href="services.html">Technology</a></li><li><a href="services.html">Enterprise IT</a></li></ul></div>
     <div><div class="footer-heading">Company</div><ul class="footer-links"><li><a href="about.html">About Us</a></li><li><a href="projects.html">Projects</a></li><li><a href="team.html">Team</a></li><li><a href="careers.html">Careers</a></li><li><a href="collaborate.html">Collaborate</a></li></ul></div>
-    <div><div class="footer-heading">Contact</div><ul class="footer-links"><li><a href="tel:+919629051083">+91 9629051083</a></li><li><a href="mailto:gowtham@rapdfly.com">gowtham@rapdfly.com</a></li><li><a href="#">Bangalore, Karnataka</a></li></ul></div>
+    <div><div class="footer-heading">Contact</div><ul class="footer-links"><li><a href="tel:+919629051083">+91 9629051083</a></li><li><a href="mailto:gowtham@rapdfly.com">gowtham@rapdfly.com</a></li><li>Bangalore, Karnataka</li></ul></div>
   </div>
   <div class="footer-bottom">
-    <div class="footer-copy">© 2024 <span class="brand-name">Rapdfly</span>. All rights reserved.</div>
+    <div class="footer-copy">© <span id="yr"></span> <span class="brand-name">Rapdfly</span>. All rights reserved.</div>
     <div style="font-size:.8rem;color:var(--text-muted);">Est. 2018 · Bangalore, India</div>
   </div>
 </footer>
@@ -1704,6 +1704,7 @@ document.querySelectorAll('.nav-links a').forEach(a => a.addEventListener('click
     });
   });
 })();
+document.getElementById('yr').textContent = new Date().getFullYear();
 </script>
 </body>
 </html>

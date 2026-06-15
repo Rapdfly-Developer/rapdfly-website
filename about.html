@@ -1262,7 +1262,7 @@ footer {
   <ul class="nav-links" id="navLinks">
     <li><a href="index.html">Home</a></li>
     <li><a href="about.html" class="active">About Us</a></li>
-    <li><a href="index.html#services">Services</a></li>
+    <li><a href="services.html">Services</a></li>
     <li><a href="index.html#projects">Projects</a></li>
     <li><a href="team.html">Team</a></li>
     <li><a href="careers.html">Careers</a></li>
@@ -1401,7 +1401,7 @@ footer {
           <div class="founder-name">Venkataswara Jagadeesan</div>
           <div class="founder-title">CEO &amp; Founder</div>
           <p class="founder-bio">
-            A visionary entrepreneur who built Rapdfly from the ground up with a singular conviction , 
+            A visionary entrepreneur who built Rapdfly from the ground up with a singular conviction
             that businesses deserve a partner who genuinely cares about their outcomes.
             Venkataswara leads with a hands-on approach across client strategy, product direction,
             and business development, weaving deep domain expertise with a sharp eye for
@@ -1433,7 +1433,7 @@ footer {
       <div class="section-label reveal">Our Journey</div>
       <h2 class="section-title reveal reveal-delay-1">Built milestone<br>by <span>milestone</span></h2>
       <p style="color:var(--text-secondary); font-size:1rem; line-height:1.8; margin-top:16px;" class="reveal reveal-delay-2">
-        Every chapter of Rapdfly's growth has been shaped by a commitment to expansion , 
+        Every chapter of Rapdfly's growth has been shaped by a commitment to expansion,
         new services, new partnerships, new industries served.
       </p>
     </div>
@@ -1505,7 +1505,7 @@ footer {
   <h2>Ready to grow <span>together?</span></h2>
   <p>Let's explore how Rapdfly can add real value to your business.</p>
   <a href="index.html#contact" class="btn-primary">Start a Conversation →</a>
-  <a href="index.html#services" class="btn-secondary">View Services</a>
+  <a href="services.html" class="btn-secondary">View Services</a>
 </div>
 
 <!--  FOOTER  -->
@@ -1518,10 +1518,10 @@ footer {
     <div>
       <div class="footer-heading">Services</div>
       <ul class="footer-links">
-        <li><a href="index.html#services">ERP Solutions</a></li>
-        <li><a href="index.html#services">CRM Systems</a></li>
-        <li><a href="index.html#services">HMMS</a></li>
-        <li><a href="index.html#services">Cloud Solutions</a></li>
+        <li><a href="services.html">ERP Solutions</a></li>
+        <li><a href="services.html">CRM Systems</a></li>
+        <li><a href="services.html">HMMS</a></li>
+        <li><a href="services.html">Cloud Solutions</a></li>
       </ul>
     </div>
     <div>
@@ -1539,13 +1539,13 @@ footer {
       <ul class="footer-links">
         <li><a href="tel:+919629051083">+91 9629051083</a></li>
         <li><a href="mailto:gowtham@rapdfly.com">gowtham@rapdfly.com</a></li>
-        <li><a href="#">HSR Layout, Bangalore</a></li>
-        <li><a href="#">Karnataka, 560102</a></li>
+        <li>HSR Layout, Bangalore</li>
+        <li>Karnataka, 560102</li>
       </ul>
     </div>
   </div>
   <div class="footer-bottom">
-    <div class="footer-copy">© 2024 <span class="brand-name">Rapdfly</span>. All rights reserved. Uniqueness Overloaded.</div>
+    <div class="footer-copy">© <span id="yr"></span> <span class="brand-name">Rapdfly</span>. All rights reserved.</div>
     <div style="font-size:0.8rem; color:var(--text-muted);">Est. 2018 · Bangalore, India</div>
   </div>
 </footer>
@@ -1693,6 +1693,7 @@ document.querySelectorAll('.nav-links a').forEach(a => {
     });
   });
 })();
+document.getElementById('yr').textContent = new Date().getFullYear();
 </script>
 </body>
 </html>

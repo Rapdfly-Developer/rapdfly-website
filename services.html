@@ -1499,10 +1499,10 @@ footer {
     </div>
     <div><div class="footer-heading">Services</div><ul class="footer-links"><li><a href="services.html">Consulting</a></li><li><a href="services.html">Technology</a></li><li><a href="services.html">Enterprise IT</a></li><li><a href="services.html">E-Commerce</a></li></ul></div>
     <div><div class="footer-heading">Company</div><ul class="footer-links"><li><a href="about.html">About Us</a></li><li><a href="projects.html">Projects</a></li><li><a href="team.html">Team</a></li><li><a href="careers.html">Careers</a></li><li><a href="collaborate.html">Collaborate</a></li></ul></div>
-    <div><div class="footer-heading">Contact</div><ul class="footer-links"><li><a href="tel:+919629051083">+91 9629051083</a></li><li><a href="mailto:gowtham@rapdfly.com">gowtham@rapdfly.com</a></li><li><a href="#">HSR Layout, Bangalore</a></li></ul></div>
+    <div><div class="footer-heading">Contact</div><ul class="footer-links"><li><a href="tel:+919629051083">+91 9629051083</a></li><li><a href="mailto:gowtham@rapdfly.com">gowtham@rapdfly.com</a></li><li>HSR Layout, Bangalore</li></ul></div>
   </div>
   <div class="footer-bottom">
-    <div class="footer-copy">© 2024 <span class="brand-name">Rapdfly</span>. All rights reserved.</div>
+    <div class="footer-copy">© <span id="yr"></span> <span class="brand-name">Rapdfly</span>. All rights reserved.</div>
     <div style="font-size:.8rem;color:var(--text-muted);">Est. 2018 · Bangalore, India</div>
   </div>
 </footer>
@@ -1630,6 +1630,7 @@ document.querySelectorAll('.nav-links a').forEach(a => a.addEventListener('click
     });
   });
 })();
+document.getElementById('yr').textContent = new Date().getFullYear();
 </script>
 </body>
 </html>

@@ -1251,22 +1251,34 @@ footer {
     </div>
     <div class="process-steps">
       <div class="step reveal rd1">
-        <div class="step-circle"><div class="step-num">01</div></div>
+        <div class="step-circle">
+          <div class="step-num">01</div>
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        </div>
         <div class="step-title">Discovery</div>
         <p class="step-desc">We begin with a deep-dive into your requirements and scope, understanding your business, your goals, and presenting the solution options best aligned to your needs.</p>
       </div>
       <div class="step reveal rd2">
-        <div class="step-circle"><div class="step-num">02</div></div>
+        <div class="step-circle">
+          <div class="step-num">02</div>
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><line x1="10" y1="9" x2="8" y2="9"/></svg>
+        </div>
         <div class="step-title">Proposal</div>
         <p class="step-desc">Technology selection, timeline, budget, and team composition are defined and documented. Full transparency, no surprises, no hidden costs.</p>
       </div>
       <div class="step reveal rd3">
-        <div class="step-circle"><div class="step-num">03</div></div>
+        <div class="step-circle">
+          <div class="step-num">03</div>
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        </div>
         <div class="step-title">Resourcing</div>
         <p class="step-desc">The agreed team is assembled based on the exact skillsets required and member availability, the right people matched to your exact challenge.</p>
       </div>
       <div class="step reveal" style="transition-delay:.4s;">
-        <div class="step-circle"><div class="step-num">04</div></div>
+        <div class="step-circle">
+          <div class="step-num">04</div>
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="22,12 18,12 15,21 9,3 6,12 2,12"/></svg>
+        </div>
         <div class="step-title">Engagement</div>
         <p class="step-desc">Regular update meetings and milestone reviews throughout delivery, with a formal project handoff and knowledge transfer at successful completion.</p>
       </div>
@@ -1315,10 +1327,10 @@ footer {
     </div>
     <div><div class="footer-heading">Services</div><ul class="footer-links"><li><a href="services.html">Consulting</a></li><li><a href="services.html">Technology</a></li><li><a href="services.html">Enterprise IT</a></li></ul></div>
     <div><div class="footer-heading">Company</div><ul class="footer-links"><li><a href="about.html">About Us</a></li><li><a href="projects.html">Projects</a></li><li><a href="team.html">Team</a></li><li><a href="careers.html">Careers</a></li></ul></div>
-    <div><div class="footer-heading">Contact</div><ul class="footer-links"><li><a href="tel:+919629051083">+91 9629051083</a></li><li><a href="mailto:gowtham@rapdfly.com">gowtham@rapdfly.com</a></li><li><a href="#">Bangalore, Karnataka</a></li></ul></div>
+    <div><div class="footer-heading">Contact</div><ul class="footer-links"><li><a href="tel:+919629051083">+91 9629051083</a></li><li><a href="mailto:gowtham@rapdfly.com">gowtham@rapdfly.com</a></li><li>Bangalore, Karnataka</li></ul></div>
   </div>
   <div class="footer-bottom">
-    <div class="footer-copy">© 2024 <span class="brand-name">Rapdfly</span>. All rights reserved.</div>
+    <div class="footer-copy">© <span id="yr"></span> <span class="brand-name">Rapdfly</span>. All rights reserved.</div>
     <div style="font-size:.8rem;color:var(--text-muted);">Est. 2018 · Bangalore, India</div>
   </div>
 </footer>
@@ -1497,6 +1509,7 @@ async function handleSubmit(e) {
     });
   });
 })();
+document.getElementById('yr').textContent = new Date().getFullYear();
 </script>
 </body>
 </html>
