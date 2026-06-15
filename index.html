@@ -29,23 +29,6 @@
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/*  Base  */
-/*  Navigation  */
-/*  Hero banner   strong contrast on light bg  */
-/* 3D card   deep navy glow instead of neon */
-/*  Buttons  */
-/*  Stats strip  */
-/*  Section labels & titles  */
-/*  About preview  */
-/*  Services highlights  */
-/*  Projects preview  */
-/*  Partners strip  */
-/*  CTA band  */
-/*  Contact strip  */
-/*  Footer  */
-/*  Theme toggle btn  */
-/*  Canvas: full opacity in light mode; JS recolors particles to vivid navy/purple  */
-/*  Logo image  */
 .logo-img {
   height: 34px;
   width: 34px;
@@ -56,7 +39,6 @@
   display: inline-block;
 }
 
-/*  Theme toggle button  */
 * {
   margin: 0;
   padding: 0;
@@ -85,7 +67,6 @@ body {
   cursor: default;
 }
 
-/*  Canvas  */
 #hero-canvas {
   position: fixed;
   top: 0;
@@ -96,7 +77,6 @@ body {
   pointer-events: none;
 }
 
-/*  Navigation  */
 nav {
   position: fixed;
   top: 0;
@@ -223,7 +203,6 @@ nav.scrolled {
   will-change: transform;
 }
 
-/* Two-column layout per slide */
 .banner-slide {
   min-width: 100%;
   height: 100%;
@@ -235,7 +214,6 @@ nav.scrolled {
   position: relative;
 }
 
-/* Left   text column */
 .slide-text {
   flex: 1;
   position: relative;
@@ -259,7 +237,6 @@ nav.scrolled {
   }
 }
 
-/* Right   3D image column */
 .slide-visual {
   flex: 1;
   display: flex;
@@ -285,7 +262,6 @@ nav.scrolled {
   }
 }
 
-/* 3D floating card */
 .slide-3d-card {
   position: relative;
   width: 100%;
@@ -315,7 +291,6 @@ nav.scrolled {
   opacity: 1;
 }
 
-/* Top edge highlight line */
 .slide-3d-card::before {
   content: '';
   position: absolute;
@@ -329,7 +304,6 @@ nav.scrolled {
   filter: blur(0.5px);
 }
 
-/* Ambient glow halo behind card */
 .slide-3d-card::after {
   content: '';
   position: absolute;
@@ -355,7 +329,6 @@ nav.scrolled {
   }
 }
 
-/* Scan-line shimmer overlay on image */
 .card-shimmer {
   position: absolute;
   inset: 0;
@@ -517,7 +490,6 @@ nav.scrolled {
   transform: translateY(-2px);
 }
 
-/* Banner dots */
 .banner-dots {
   position: absolute;
   bottom: 36px;
@@ -545,7 +517,6 @@ nav.scrolled {
   box-shadow: 0 0 12px rgba(0, 212, 255, 0.6);
 }
 
-/* Banner arrows */
 .banner-arrow {
   position: absolute;
   top: 50%;
@@ -580,7 +551,6 @@ nav.scrolled {
   right: 32px;
 }
 
-/* Progress bar */
 .banner-progress {
   position: absolute;
   bottom: 0;
@@ -592,7 +562,6 @@ nav.scrolled {
   transition: width 0.1s linear;
 }
 
-/* Scroll indicator */
 .scroll-indicator {
   position: absolute;
   bottom: 48px;
@@ -1425,7 +1394,6 @@ section {
   box-shadow: 0 8px 30px rgba(0, 212, 255, 0.35);
 }
 
-/*  Footer  */
 footer {
   position: relative;
   z-index: 1;
@@ -1508,7 +1476,6 @@ footer {
   color: var(--text-muted);
 }
 
-/*  Reveal  */
 .reveal {
   opacity: 0;
   transform: translateY(32px);
@@ -1581,7 +1548,6 @@ footer {
   transition-delay: 0.48s;
 }
 
-/*  Grid BG  */
 .grid-bg {
   position: absolute;
   inset: 0;
@@ -1592,7 +1558,6 @@ footer {
   pointer-events: none;
 }
 
-/*  CSS Particles  */
 .particle {
   position: fixed;
   pointer-events: none;
@@ -1621,7 +1586,6 @@ footer {
   }
 }
 
-/*  Responsive  */
 @media (max-width: 1024px) {
   section {
     padding: 80px 40px;
@@ -1674,7 +1638,6 @@ footer {
     height: 60px;
   }
 
-  /*  Dropdown nav  */
   .nav-links {
     display: flex;
     flex-direction: column;
@@ -1748,7 +1711,6 @@ footer {
     -webkit-text-fill-color: #000 !important;
   }
 
-  /*  Hamburger  */
   .hamburger {
     display: flex;
     flex-direction: column;
@@ -1762,7 +1724,6 @@ footer {
     position: relative;
   }
 
-  /* Animated X when open */
   .hamburger.active span:nth-child(1) {
     transform: translateY(7px) rotate(45deg);
   }
@@ -1835,7 +1796,6 @@ footer {
     padding: 48px 0;
   }
 
-  /*  Hero banner two-column → stacked on mobile  */
   .banner-slide {
     flex-direction: column;
     justify-content: center;
@@ -1884,7 +1844,6 @@ footer {
   }
 }
 
-/*  Brand name red  */
 .nav-logo {
   color: #FF1A1A;
   -webkit-text-fill-color: #FF1A1A;
@@ -1907,7 +1866,6 @@ footer {
   color: #FF1A1A;
 }
 
-/*  Cursor Glow  */
 #cursor-glow {
   position: fixed;
   pointer-events: none;
@@ -1921,7 +1879,6 @@ footer {
   mix-blend-mode: screen;
 }
 
-/*  Floating ambient orbs  */
 .orb {
   position: fixed;
   border-radius: 50%;
@@ -1950,7 +1907,6 @@ footer {
   }
 }
 
-/*  Section title shimmer on reveal  */
 @keyframes shimmer-sweep {
   0% {
     background-position: -200% center;
@@ -1969,7 +1925,6 @@ footer {
   animation: shimmer-sweep 3s linear infinite;
 }
 
-/*  Partner badge hover glow  */
 .partner-badge {
   transition: border-color 0.35s, transform 0.4s var(--spring), box-shadow 0.4s var(--spring);
 }
@@ -1980,7 +1935,6 @@ footer {
   transform: translateY(-5px) scale(1.03);
 }
 
-/*  Contact card improved hover  */
 .contact-card {
   transition: border-color 0.3s, transform 0.4s var(--spring), box-shadow 0.4s var(--spring);
 }
@@ -1991,12 +1945,10 @@ footer {
   box-shadow: 0 8px 32px rgba(0, 212, 255, 0.1);
 }
 
-/*  Animated gradient underline on nav links  */
 .nav-links a::after {
   transition: width 0.35s var(--spring) !important;
 }
 
-/*  Preview card improved hover  */
 .preview-card {
   transition: border-color 0.35s, transform 0.5s var(--spring), box-shadow 0.5s var(--spring) !important;
 }
@@ -2016,7 +1968,6 @@ footer {
   transform: scale(1.04) !important;
 }
 
-/*  Scroll-driven section fade  */
 @supports (animation-timeline: scroll()) {
   .section-parallax {
     animation: section-rise linear both;
@@ -2037,7 +1988,6 @@ footer {
   }
 }
 
-/*  prefers-reduced-motion: disable all non-essential motion  */
 @media (prefers-reduced-motion: reduce) {
 
   *,
@@ -2627,7 +2577,6 @@ footer {
 </footer>
 
 <script>
-//  Auto-Scrolling 3D Banner 
 (function initBanner() {
   const track = document.getElementById('bannerTrack');
   const slides = track.querySelectorAll('.banner-slide');
@@ -2645,7 +2594,6 @@ footer {
   let progressVal = 0;
   let transitioning = false;
 
-  // Build dots
   slides.forEach((_, i) => {
     const dot = document.createElement('div');
     dot.className = 'dot' + (i === 0 ? ' active' : '');
@@ -2679,7 +2627,6 @@ footer {
     goTo(current - 1);
   }
 
-  // Progress bar
   function resetProgress() {
     clearInterval(progressTimer);
     progressVal = 0;
@@ -2693,7 +2640,6 @@ footer {
     });
   }
 
-  // Auto-play
   function startAuto() {
     clearInterval(timer);
     timer = setInterval(next, INTERVAL);
@@ -2710,12 +2656,10 @@ footer {
     startAuto();
   });
 
-  // Pause on hover
   const heroEl = document.getElementById('hero');
   heroEl.addEventListener('mouseenter', () => clearInterval(timer));
   heroEl.addEventListener('mouseleave', () => startAuto());
 
-  // Touch/swipe support
   let touchStartX = 0;
   heroEl.addEventListener('touchstart', e => {
     touchStartX = e.changedTouches[0].screenX;
@@ -2733,7 +2677,6 @@ footer {
     passive: true
   });
 
-  // 3D parallax tilt   card tilts with mouse, text counter-tilts subtly
   heroEl.addEventListener('mousemove', e => {
     const {
       clientX,
@@ -2885,7 +2828,6 @@ const PARTICLE_COLORS = {
   });
 })();
 
-//  Scroll Reveal (all variants) 
 const revealObs = new IntersectionObserver(entries => {
   entries.forEach(e => {
     if (e.isIntersecting) e.target.classList.add('visible');
@@ -2896,7 +2838,6 @@ const revealObs = new IntersectionObserver(entries => {
 });
 document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale').forEach(el => revealObs.observe(el));
 
-//  Counter Animation (RAF + easeOutExpo) 
 function easeOutExpo(t) {
   return t === 1 ? 1 : 1 - Math.pow(2, -10 * t);
 }
@@ -2923,7 +2864,6 @@ const counterObs = new IntersectionObserver(entries => {
 });
 document.querySelectorAll('[data-count]').forEach(c => counterObs.observe(c));
 
-//  Cursor Glow 
 (function initCursorGlow() {
   const glow = document.getElementById('cursor-glow');
   if (!glow || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
@@ -2948,7 +2888,6 @@ document.querySelectorAll('[data-count]').forEach(c => counterObs.observe(c));
   })();
 })();
 
-//  Magnetic Buttons 
 (function initMagnetic() {
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
   document.querySelectorAll('.btn-primary, .btn-secondary, .nav-cta').forEach(btn => {
@@ -2964,13 +2903,10 @@ document.querySelectorAll('[data-count]').forEach(c => counterObs.observe(c));
   });
 })();
 
-//  Theme Toggle 
-//  Navbar Scroll 
 window.addEventListener('scroll', () => {
   document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 60);
 });
 
-//  Mobile Menu 
 function toggleMenu() {
   const links = document.getElementById('navLinks');
   const burger = document.getElementById('hamburger');
@@ -2992,7 +2928,6 @@ document.addEventListener('click', e => {
   }
 });
 
-//  Contact Form 
 function handleSubmit(e) {
   e.preventDefault();
   const btn = document.getElementById('submitBtn');
@@ -3010,7 +2945,6 @@ function handleSubmit(e) {
   }, 1500);
 }
 
-//  CSS Particle Rain 
 (function spawnParticles() {
   for (let i = 0; i < 18; i++) {
     const p = document.createElement('div');

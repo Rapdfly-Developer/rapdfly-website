@@ -57,7 +57,6 @@ body {
   pointer-events: none;
 }
 
-/*  Nav  */
 nav {
   position: fixed;
   top: 0;
@@ -178,7 +177,6 @@ nav.scrolled {
   background: var(--accent-blue);
 }
 
-/*  Page Hero  */
 .page-hero {
   position: relative;
   z-index: 1;
@@ -280,7 +278,6 @@ nav.scrolled {
   color: var(--accent-blue);
 }
 
-/*  Sections  */
 section.cs {
   position: relative;
   z-index: 1;
@@ -337,7 +334,6 @@ section.cs.alt {
   margin-bottom: 56px;
 }
 
-/*  Job Cards  */
 .jobs-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
@@ -503,7 +499,6 @@ section.cs.alt {
   fill: #000;
 }
 
-/*  Why Join  */
 .why-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -537,7 +532,6 @@ section.cs.alt {
   line-height: 1.7;
 }
 
-/*  Open Application Banner  */
 .open-app {
   position: relative;
   z-index: 1;
@@ -592,7 +586,6 @@ section.cs.alt {
   -webkit-text-fill-color: #000;
 }
 
-/*  Footer  */
 footer {
   position: relative;
   z-index: 1;
@@ -672,7 +665,6 @@ footer {
   color: #FF1A1A;
 }
 
-/*  Responsive  */
 @media(max-width:900px) {
   nav {
     padding: 16px 24px;
@@ -755,13 +747,11 @@ footer {
    cursor glow, magnetic buttons, a11y
     */
 
-/* Spring easing vars */
 :root {
   --spring: cubic-bezier(0.16, 1, 0.3, 1);
   --spring-fast: cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-/*  Cursor glow  */
 #cursor-glow {
   position: fixed;
   pointer-events: none;
@@ -774,7 +764,6 @@ footer {
   mix-blend-mode: screen;
 }
 
-/*  Ambient orbs  */
 .orb {
   position: fixed;
   border-radius: 50%;
@@ -803,7 +792,6 @@ footer {
   }
 }
 
-/*  Improved reveal (blur + spring)  */
 .reveal {
   opacity: 0;
   transform: translateY(30px);
@@ -876,7 +864,6 @@ footer {
   transition-delay: 0.48s;
 }
 
-/*  Button improved  */
 .btn-primary,
 .apply-btn,
 .open-app-btn {
@@ -902,7 +889,6 @@ footer {
   transform: translateY(-2px) !important;
 }
 
-/*  Card hover  */
 .job-card,
 .why-card,
 .engage-card,
@@ -921,7 +907,6 @@ footer {
   box-shadow: 0 24px 60px rgba(0, 212, 255, 0.12), 0 0 0 1px rgba(0, 212, 255, 0.08) !important;
 }
 
-/*  Section title gradient shimmer  */
 @keyframes shimmer-sweep {
   0% {
     background-position: -200% center;
@@ -939,7 +924,6 @@ footer {
   animation: shimmer-sweep 3.5s linear infinite;
 }
 
-/*  Scroll-driven parallax (progressive enhancement)  */
 @supports (animation-timeline: scroll()) {
   .page-hero {
     animation: hero-parallax linear both;
@@ -955,12 +939,10 @@ footer {
   }
 }
 
-/*  Nav link underline spring  */
 .nav-links a::after {
   transition: width 0.35s var(--spring) !important;
 }
 
-/*  prefers-reduced-motion  */
 @media(prefers-reduced-motion:reduce) {
 
   *,
@@ -1271,12 +1253,10 @@ footer {
   });
 })();
 
-//  Navbar scroll 
 window.addEventListener('scroll', () =>
   document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 60)
 );
 
-//  Mobile menu 
 function toggleMenu() {
   document.getElementById('navLinks').classList.toggle('open');
 }
@@ -1284,9 +1264,6 @@ document.querySelectorAll('.nav-links a').forEach(a =>
   a.addEventListener('click', () => document.getElementById('navLinks').classList.remove('open'))
 );
 
-//  Motion Upgrade: reveal variants + cursor glow + magnetic buttons 
-
-// Reveal all variants   threshold:0, no rootMargin exclusion, hard fallback
 (function() {
   var els = document.querySelectorAll('.reveal,.reveal-left,.reveal-right,.reveal-scale');
 
@@ -1316,7 +1293,6 @@ document.querySelectorAll('.nav-links a').forEach(a =>
   }, 800);
 })();
 
-// Cursor glow (smooth lag)
 (function() {
   const glow = document.getElementById('cursor-glow');
   if (!glow || window.matchMedia('(prefers-reduced-motion:reduce)').matches) return;
@@ -1341,7 +1317,6 @@ document.querySelectorAll('.nav-links a').forEach(a =>
   })();
 })();
 
-// Magnetic buttons
 (function() {
   if (window.matchMedia('(prefers-reduced-motion:reduce)').matches) return;
   document.querySelectorAll('.btn-primary,.btn-secondary,.apply-btn,.nav-cta,.open-app-btn').forEach(btn => {
