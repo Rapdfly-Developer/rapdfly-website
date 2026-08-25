@@ -148,6 +148,45 @@ nav.scrolled {
 .nav-cta::after {
   display: none !important;
 }
+.nav-bos {
+  padding: 10px 20px;
+  border: 1px solid var(--accent-purple);
+  border-radius: 50px;
+  color: var(--accent-violet) !important;
+  transition: all 0.3s !important;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.nav-bos::before {
+  content: '';
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--accent-violet);
+  flex-shrink: 0;
+  animation: bos-pulse 2s ease-in-out infinite;
+}
+
+@keyframes bos-pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(0.75); }
+}
+
+.nav-bos:hover {
+  background: var(--accent-purple) !important;
+  color: #fff !important;
+  -webkit-text-fill-color: #fff !important;
+  box-shadow: 0 0 28px rgba(124, 58, 237, 0.45);
+}
+
+.nav-bos::after {
+  display: none !important;
+}
 
 .hamburger {
   display: none;
