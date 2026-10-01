@@ -1101,6 +1101,17 @@ footer {
     animation: none;
   }
 }
+
+.hp-field {
+  position: absolute;
+  left: -9999px;
+  top: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  opacity: 0;
+  pointer-events: none;
+}
 </style>
 </head>
 <body>
@@ -1174,6 +1185,10 @@ footer {
         <div class="form-title">Send us a message</div>
         <div class="form-subtitle">We'll get back to you within one business day.</div>
         <form id="contactForm" onsubmit="handleSubmit(event)">
+          <div class="hp-field" aria-hidden="true">
+            <label>Website</label>
+            <input type="text" name="website" tabindex="-1" autocomplete="off">
+          </div>
           <div class="form-row">
             <div class="form-group">
               <label class="form-label">First Name</label>
@@ -1386,6 +1401,8 @@ function toggleMenu() {
 }
 document.querySelectorAll('.nav-links a').forEach(a => a.addEventListener('click', () => document.getElementById('navLinks').classList.remove('open')));
 
+const formRenderedAt = Date.now();
+
 async function handleSubmit(e) {
   e.preventDefault();
   const btn = document.getElementById('submitBtn');
@@ -1401,6 +1418,8 @@ async function handleSubmit(e) {
     engagementModel: data.engagementModel,
     service: data.service,
     message: data.message,
+    website: data.website || '',
+    elapsed: Date.now() - formRenderedAt,
   };
 
   btn.textContent = 'Sending...';
