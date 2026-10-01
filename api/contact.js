@@ -190,7 +190,7 @@ module.exports = async function handler(req, res) {
     message: escapeHtml(message),
   };
 
-  const flagged = score > 0 ? `<p style="margin:0 0 16px;padding:10px 14px;background:#fef3c7;border-radius:6px;color:#92400e;font-size:13px;">Possible spam (score ${score}) — review before replying.</p>` : '';
+  const flagged = score > 0 ? `<p style="margin:0 0 16px;padding:10px 14px;background:#fef3c7;border-radius:6px;color:#92400e;font-size:13px;">Possible spam (score ${score}) - review before replying.</p>` : '';
 
   const html = `
     <div style="font-family:sans-serif;max-width:620px;margin:auto;padding:32px;border:1px solid #e2e8f0;border-radius:12px;">

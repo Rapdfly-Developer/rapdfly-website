@@ -4,7 +4,8 @@
 <meta charset="UTF-8">
 <link rel="icon" type="image/png" href="rf-favicon.png">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Rapdfly  | Enterprise IT Solutions</title>
+<meta name="description" content="Rapdfly is a Bangalore-based enterprise IT company delivering AI, ERP, IoT, CRM, HMMS and cloud solutions since 2018.">
+<title>Rapdfly | Enterprise IT Solutions</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <style>
 :root {
@@ -2084,7 +2085,7 @@ footer {
     <li><a href="careers.html">Careers</a></li>
     <li><a href="https://app.rapdfly.com/" target="_blank" rel="noopener" class="nav-bos">Business OS</a></li>
   </ul>
-  <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+  <div class="hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Toggle navigation menu" aria-expanded="false" role="button">
     <span></span><span></span><span></span>
   </div>
 </nav>
@@ -2479,18 +2480,21 @@ footer {
       </p>
       <div class="contact-cards reveal reveal-delay-3">
         <div class="contact-card">
+          <div class="contact-card-icon">📞</div>
           <div>
             <div class="contact-card-label">Phone</div>
-            <div class="contact-card-value">+91 9629051083</div>
+            <div class="contact-card-value"><a href="tel:+919629051083" style="color:inherit;text-decoration:none;">+91 9629051083</a></div>
           </div>
         </div>
         <div class="contact-card">
+          <div class="contact-card-icon">✉️</div>
           <div>
             <div class="contact-card-label">Email</div>
-            <div class="contact-card-value">gowtham@rapdfly.com</div>
+            <div class="contact-card-value"><a href="mailto:gowtham@rapdfly.com" style="color:inherit;text-decoration:none;">gowtham@rapdfly.com</a></div>
           </div>
         </div>
         <div class="contact-card">
+          <div class="contact-card-icon">📍</div>
           <div>
             <div class="contact-card-label">Address</div>
             <div class="contact-card-value">No. 29/A (E), 27th Main Rd, 1st Sector,<br>HSR Layout, Bangalore, 560102</div>
@@ -2943,6 +2947,7 @@ function toggleMenu() {
   const burger = document.getElementById('hamburger');
   links.classList.toggle('open');
   burger.classList.toggle('active');
+  burger.setAttribute('aria-expanded', links.classList.contains('open') ? 'true' : 'false');
 }
 document.querySelectorAll('.nav-links a').forEach(a => {
   a.addEventListener('click', () => {
@@ -2979,7 +2984,7 @@ async function handleSubmit(e) {
     form.reset();
     setTimeout(() => { btn.textContent = 'Send Message →'; btn.style.background = ''; btn.disabled = false; }, 3000);
   } catch (err) {
-    btn.textContent = 'Failed — try again';
+    btn.textContent = 'Failed, please try again';
     btn.style.background = 'rgba(239,68,68,0.3)';
     setTimeout(() => { btn.textContent = 'Send Message →'; btn.style.background = ''; btn.disabled = false; }, 3000);
   }

@@ -4,7 +4,8 @@
 <meta charset="UTF-8">
 <link rel="icon" type="image/png" href="rf-favicon.png">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Team  | Rapdfly</title>
+<meta name="description" content="Meet the Rapdfly team - the engineers, consultants and strategists behind 50+ enterprise IT solutions.">
+<title>Team | Rapdfly</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <style>
 :root {
@@ -1133,7 +1134,7 @@ footer {
     <li><a href="careers.html">Careers</a></li>
     <li><a href="https://app.rapdfly.com/" target="_blank" rel="noopener" class="nav-bos">Business OS</a></li>
   </ul>
-  <div class="hamburger" id="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></div>
+  <div class="hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Toggle navigation menu" aria-expanded="false" role="button"><span></span><span></span><span></span></div>
 </nav>
 
 <div class="page-hero">
@@ -1284,7 +1285,10 @@ footer {
 window.addEventListener('scroll', () => document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 60));
 
 function toggleMenu() {
-  document.getElementById('navLinks').classList.toggle('open');
+  const links = document.getElementById('navLinks');
+  const burger = document.getElementById('hamburger');
+  links.classList.toggle('open');
+  if (burger) burger.setAttribute('aria-expanded', links.classList.contains('open') ? 'true' : 'false');
 }
 document.querySelectorAll('.nav-links a').forEach(a => a.addEventListener('click', () => document.getElementById('navLinks').classList.remove('open')));
 
